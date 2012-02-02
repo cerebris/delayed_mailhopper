@@ -20,7 +20,7 @@ Install with bundler (note: also installs dependencies such as DelayedJob and Ma
 
 == Configure Mailhopper
 
-If you haven't already, you'll need to run generators Mailhopper and then migrate your database.
+If you haven't already, you'll need to run generators for Mailhopper and then migrate your database.
 
   rails g mailhopper
   rake db:migrate
