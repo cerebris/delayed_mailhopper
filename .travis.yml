@@ -1,3 +1,4 @@
+before_script: "bundle exec rake db:migrate RAILS_ENV=test"
 script: "bundle exec rake spec"
 rvm:
   - 1.8.7
