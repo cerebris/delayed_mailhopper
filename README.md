@@ -1,4 +1,4 @@
-# DelayedMailhopper
+# DelayedMailhopper [![Build Status](https://secure.travis-ci.org/cerebris/delayed_mailhopper.png)](http://travis-ci.org/cerebris/delayed_mailhopper)
 
 DelayedMailhopper provides a simple solution to queue, deliver and archive emails in Rails apps. It extends Mailhopper and uses DelayedJob to queue delivery jobs asynchronously.
 
