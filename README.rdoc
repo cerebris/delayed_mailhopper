@@ -4,9 +4,9 @@ DelayedMailhopper provides a simple solution to queue, deliver and archive email
 
 == Requirements
 
-Rails 3.1+
-DelayedJob
-Mailhopper
+  Rails 3.1+
+  DelayedJob
+  Mailhopper
 
 == Installation
 
