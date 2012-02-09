@@ -1,0 +1,1407 @@
+  [1m[36m (0.1ms)[0m  [1mselect sqlite_version(*)[0m
+  [1m[35m (1.1ms)[0m  CREATE TABLE "schema_migrations" ("version" varchar(255) NOT NULL) 
+  [1m[36m (0.0ms)[0m  [1mPRAGMA index_list("schema_migrations")[0m
+  [1m[35m (7.9ms)[0m  CREATE UNIQUE INDEX "unique_schema_migrations" ON "schema_migrations" ("version")
+  [1m[36m (0.1ms)[0m  [1mSELECT "schema_migrations"."version" FROM "schema_migrations" [0m
+Migrating to CreateEmails (20110804223859)
+  [1m[35m (0.0ms)[0m  begin transaction
+  [1m[36m (0.4ms)[0m  [1mCREATE TABLE "emails" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "from_address" varchar(255) NOT NULL, "to_address" varchar(255), "cc_address" varchar(255), "bcc_address" varchar(255), "reply_to_address" varchar(255), "subject" varchar(255), "content" text, "sent_at" datetime, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL) [0m
+  [1m[35m (0.1ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES ('20110804223859')
+  [1m[36m (5.3ms)[0m  [1mcommit transaction[0m
+Migrating to CreateDelayedJobs (20110804224806)
+  [1m[35m (0.0ms)[0m  begin transaction
+  [1m[36m (0.4ms)[0m  [1mCREATE TABLE "delayed_jobs" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "priority" integer DEFAULT 0, "attempts" integer DEFAULT 0, "handler" text, "last_error" text, "run_at" datetime, "locked_at" datetime, "failed_at" datetime, "locked_by" varchar(255), "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL) [0m
+  [1m[35m (0.0ms)[0m  PRAGMA index_list("delayed_jobs")
+  [1m[36m (0.1ms)[0m  [1mCREATE INDEX "delayed_jobs_priority" ON "delayed_jobs" ("priority", "run_at")[0m
+  [1m[35m (0.1ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES ('20110804224806')
+  [1m[36m (1.1ms)[0m  [1mcommit transaction[0m
+  [1m[35m (0.1ms)[0m  begin transaction
+  [1m[36m (0.0ms)[0m  [1mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  begin transaction
+  Rendered sample_mailer/hello.text.erb (7.5ms)
+  [1m[36m (9.3ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35mSQL (31.4ms)[0m  INSERT INTO "emails" ("bcc_address", "cc_address", "content", "created_at", "from_address", "reply_to_address", "sent_at", "subject", "to_address", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)  [["bcc_address", "bcc@example.com"], ["cc_address", "cc@example.com"], ["content", "Date: Thu, 09 Feb 2012 09:33:31 -0500\r\nFrom: from@example.com\r\nReply-To: reply_to@example.com\r\nTo: to@example.com\r\nCc: cc@example.com\r\nMessage-ID: <4f33d93b9f8e7_3ede3ff8c0434d44967aa@dgmpro.local.mail>\r\nSubject: Hiya!\r\nMime-Version: 1.0\r\nContent-Type: text/plain;\r\n charset=UTF-8\r\nContent-Transfer-Encoding: 7bit\r\n\r\nPapaya"], ["created_at", Thu, 09 Feb 2012 14:33:31 UTC +00:00], ["from_address", "from@example.com"], ["reply_to_address", "reply_to@example.com"], ["sent_at", nil], ["subject", "Hiya!"], ["to_address", "to@example.com"], ["updated_at", Thu, 09 Feb 2012 14:33:31 UTC +00:00]]
+  [1m[36m (0.1ms)[0m  [1mROLLBACK TO SAVEPOINT active_record_1[0m
+
+Sent mail to to@example.com (63ms)
+Date: Thu, 09 Feb 2012 09:33:31 -0500
+From: from@example.com
+Reply-To: reply_to@example.com
+To: to@example.com
+Cc: cc@example.com
+Message-ID: <4f33d93b9f8e7_3ede3ff8c0434d44967aa@dgmpro.local.mail>
+Subject: Hiya!
+Mime-Version: 1.0
+Content-Type: text/plain;
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+Papaya
+  [1m[35m (0.5ms)[0m  rollback transaction
+  [1m[36m (0.0ms)[0m  [1mbegin transaction[0m
+  Rendered sample_mailer/hello.text.erb (0.1ms)
+  [1m[35m (0.1ms)[0m  SAVEPOINT active_record_1
+  [1m[36mSQL (0.4ms)[0m  [1mINSERT INTO "emails" ("bcc_address", "cc_address", "content", "created_at", "from_address", "reply_to_address", "sent_at", "subject", "to_address", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)[0m  [["bcc_address", "bcc@example.com"], ["cc_address", "cc@example.com"], ["content", "Date: Thu, 09 Feb 2012 09:33:31 -0500\r\nFrom: from@example.com\r\nReply-To: reply_to@example.com\r\nTo: to@example.com\r\nCc: cc@example.com\r\nMessage-ID: <4f33d93baf80e_3ede3ff8c0434d44968fb@dgmpro.local.mail>\r\nSubject: Hiya!\r\nMime-Version: 1.0\r\nContent-Type: text/plain;\r\n charset=UTF-8\r\nContent-Transfer-Encoding: 7bit\r\n\r\nPapaya"], ["created_at", Thu, 09 Feb 2012 14:33:31 UTC +00:00], ["from_address", "from@example.com"], ["reply_to_address", "reply_to@example.com"], ["sent_at", nil], ["subject", "Hiya!"], ["to_address", "to@example.com"], ["updated_at", Thu, 09 Feb 2012 14:33:31 UTC +00:00]]
+  [1m[35m (0.0ms)[0m  ROLLBACK TO SAVEPOINT active_record_1
+
+Sent mail to to@example.com (10ms)
+Date: Thu, 09 Feb 2012 09:33:31 -0500
+From: from@example.com
+Reply-To: reply_to@example.com
+To: to@example.com
+Cc: cc@example.com
+Message-ID: <4f33d93baf80e_3ede3ff8c0434d44968fb@dgmpro.local.mail>
+Subject: Hiya!
+Mime-Version: 1.0
+Content-Type: text/plain;
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+Papaya
+  [1m[36m (8.4ms)[0m  [1mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  begin transaction
+  Rendered sample_mailer/hello.text.erb (0.1ms)
+  [1m[36m (0.1ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35mSQL (0.4ms)[0m  INSERT INTO "emails" ("bcc_address", "cc_address", "content", "created_at", "from_address", "reply_to_address", "sent_at", "subject", "to_address", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)  [["bcc_address", "bcc@example.com"], ["cc_address", "cc@example.com"], ["content", "Date: Thu, 09 Feb 2012 09:33:31 -0500\r\nFrom: from@example.com\r\nReply-To: reply_to@example.com\r\nTo: to@example.com\r\nCc: cc@example.com\r\nMessage-ID: <4f33d93bb6255_3ede3ff8c0434d449691c@dgmpro.local.mail>\r\nSubject: Hiya!\r\nMime-Version: 1.0\r\nContent-Type: text/plain;\r\n charset=UTF-8\r\nContent-Transfer-Encoding: 7bit\r\n\r\nPapaya"], ["created_at", Thu, 09 Feb 2012 14:33:31 UTC +00:00], ["from_address", "from@example.com"], ["reply_to_address", "reply_to@example.com"], ["sent_at", nil], ["subject", "Hiya!"], ["to_address", "to@example.com"], ["updated_at", Thu, 09 Feb 2012 14:33:31 UTC +00:00]]
+  [1m[36m (0.0ms)[0m  [1mROLLBACK TO SAVEPOINT active_record_1[0m
+
+Sent mail to to@example.com (10ms)
+Date: Thu, 09 Feb 2012 09:33:31 -0500
+From: from@example.com
+Reply-To: reply_to@example.com
+To: to@example.com
+Cc: cc@example.com
+Message-ID: <4f33d93bb6255_3ede3ff8c0434d449691c@dgmpro.local.mail>
+Subject: Hiya!
+Mime-Version: 1.0
+Content-Type: text/plain;
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+Papaya
+  [1m[35m (0.5ms)[0m  rollback transaction
+  [1m[36m (0.0ms)[0m  [1mbegin transaction[0m
+  Rendered sample_mailer/hello.text.erb (0.1ms)
+  [1m[35m (0.1ms)[0m  SAVEPOINT active_record_1
+  [1m[36mSQL (0.4ms)[0m  [1mINSERT INTO "emails" ("bcc_address", "cc_address", "content", "created_at", "from_address", "reply_to_address", "sent_at", "subject", "to_address", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)[0m  [["bcc_address", "bcc@example.com"], ["cc_address", "cc@example.com"], ["content", "Date: Thu, 09 Feb 2012 09:33:31 -0500\r\nFrom: from@example.com\r\nReply-To: reply_to@example.com\r\nTo: to@example.com\r\nCc: cc@example.com\r\nMessage-ID: <4f33d93bbac93_3ede3ff8c0434d44970ad@dgmpro.local.mail>\r\nSubject: Hiya!\r\nMime-Version: 1.0\r\nContent-Type: text/plain;\r\n charset=UTF-8\r\nContent-Transfer-Encoding: 7bit\r\n\r\nPapaya"], ["created_at", Thu, 09 Feb 2012 14:33:31 UTC +00:00], ["from_address", "from@example.com"], ["reply_to_address", "reply_to@example.com"], ["sent_at", nil], ["subject", "Hiya!"], ["to_address", "to@example.com"], ["updated_at", Thu, 09 Feb 2012 14:33:31 UTC +00:00]]
+  [1m[35m (0.0ms)[0m  ROLLBACK TO SAVEPOINT active_record_1
+
+Sent mail to to@example.com (10ms)
+Date: Thu, 09 Feb 2012 09:33:31 -0500
+From: from@example.com
+Reply-To: reply_to@example.com
+To: to@example.com
+Cc: cc@example.com
+Message-ID: <4f33d93bbac93_3ede3ff8c0434d44970ad@dgmpro.local.mail>
+Subject: Hiya!
+Mime-Version: 1.0
+Content-Type: text/plain;
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+Papaya
+  [1m[36m (0.5ms)[0m  [1mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  begin transaction
+  [1m[36m (0.1ms)[0m  [1mrollback transaction[0m
+  [1m[36m (0.1ms)[0m  [1mSELECT "schema_migrations"."version" FROM "schema_migrations" [0m
+Migrating to CreateEmails (20110804223859)
+Migrating to CreateDelayedJobs (20110804224806)
+  [1m[35m (0.0ms)[0m  begin transaction
+  [1m[36m (0.0ms)[0m  [1mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  begin transaction
+  Rendered sample_mailer/hello.text.erb (1.7ms)
+  [1m[36m (0.1ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35mSQL (3.6ms)[0m  INSERT INTO "emails" ("bcc_address", "cc_address", "content", "created_at", "from_address", "reply_to_address", "sent_at", "subject", "to_address", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)  [["bcc_address", "bcc@example.com"], ["cc_address", "cc@example.com"], ["content", "Date: Thu, 09 Feb 2012 09:38:23 -0500\r\nFrom: from@example.com\r\nReply-To: reply_to@example.com\r\nTo: to@example.com\r\nCc: cc@example.com\r\nMessage-ID: <4f33da5f7b2bb_3eef3ff1ae034d34548dc@dgmpro.local.mail>\r\nSubject: Hiya!\r\nMime-Version: 1.0\r\nContent-Type: text/plain;\r\n charset=UTF-8\r\nContent-Transfer-Encoding: 7bit\r\n\r\nPapaya"], ["created_at", Thu, 09 Feb 2012 14:38:23 UTC +00:00], ["from_address", "from@example.com"], ["reply_to_address", "reply_to@example.com"], ["sent_at", nil], ["subject", "Hiya!"], ["to_address", "to@example.com"], ["updated_at", Thu, 09 Feb 2012 14:38:23 UTC +00:00]]
+  [1m[36m (0.1ms)[0m  [1mROLLBACK TO SAVEPOINT active_record_1[0m
+
+Sent mail to to@example.com (23ms)
+Date: Thu, 09 Feb 2012 09:38:23 -0500
+From: from@example.com
+Reply-To: reply_to@example.com
+To: to@example.com
+Cc: cc@example.com
+Message-ID: <4f33da5f7b2bb_3eef3ff1ae034d34548dc@dgmpro.local.mail>
+Subject: Hiya!
+Mime-Version: 1.0
+Content-Type: text/plain;
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+Papaya
+  [1m[35m (0.7ms)[0m  rollback transaction
+  [1m[36m (0.0ms)[0m  [1mbegin transaction[0m
+  Rendered sample_mailer/hello.text.erb (0.1ms)
+  [1m[35m (0.0ms)[0m  SAVEPOINT active_record_1
+  [1m[36mSQL (0.4ms)[0m  [1mINSERT INTO "emails" ("bcc_address", "cc_address", "content", "created_at", "from_address", "reply_to_address", "sent_at", "subject", "to_address", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)[0m  [["bcc_address", "bcc@example.com"], ["cc_address", "cc@example.com"], ["content", "Date: Thu, 09 Feb 2012 09:38:23 -0500\r\nFrom: from@example.com\r\nReply-To: reply_to@example.com\r\nTo: to@example.com\r\nCc: cc@example.com\r\nMessage-ID: <4f33da5f81cdf_3eef3ff1ae034d34549b8@dgmpro.local.mail>\r\nSubject: Hiya!\r\nMime-Version: 1.0\r\nContent-Type: text/plain;\r\n charset=UTF-8\r\nContent-Transfer-Encoding: 7bit\r\n\r\nPapaya"], ["created_at", Thu, 09 Feb 2012 14:38:23 UTC +00:00], ["from_address", "from@example.com"], ["reply_to_address", "reply_to@example.com"], ["sent_at", nil], ["subject", "Hiya!"], ["to_address", "to@example.com"], ["updated_at", Thu, 09 Feb 2012 14:38:23 UTC +00:00]]
+  [1m[35m (0.1ms)[0m  ROLLBACK TO SAVEPOINT active_record_1
+
+Sent mail to to@example.com (10ms)
+Date: Thu, 09 Feb 2012 09:38:23 -0500
+From: from@example.com
+Reply-To: reply_to@example.com
+To: to@example.com
+Cc: cc@example.com
+Message-ID: <4f33da5f81cdf_3eef3ff1ae034d34549b8@dgmpro.local.mail>
+Subject: Hiya!
+Mime-Version: 1.0
+Content-Type: text/plain;
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+Papaya
+  [1m[36m (0.5ms)[0m  [1mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  begin transaction
+  Rendered sample_mailer/hello.text.erb (0.0ms)
+  [1m[36m (0.1ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35mSQL (0.4ms)[0m  INSERT INTO "emails" ("bcc_address", "cc_address", "content", "created_at", "from_address", "reply_to_address", "sent_at", "subject", "to_address", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)  [["bcc_address", "bcc@example.com"], ["cc_address", "cc@example.com"], ["content", "Date: Thu, 09 Feb 2012 09:38:23 -0500\r\nFrom: from@example.com\r\nReply-To: reply_to@example.com\r\nTo: to@example.com\r\nCc: cc@example.com\r\nMessage-ID: <4f33da5f8cd99_3eef3ff1ae034d345503e@dgmpro.local.mail>\r\nSubject: Hiya!\r\nMime-Version: 1.0\r\nContent-Type: text/plain;\r\n charset=UTF-8\r\nContent-Transfer-Encoding: 7bit\r\n\r\nPapaya"], ["created_at", Thu, 09 Feb 2012 14:38:23 UTC +00:00], ["from_address", "from@example.com"], ["reply_to_address", "reply_to@example.com"], ["sent_at", nil], ["subject", "Hiya!"], ["to_address", "to@example.com"], ["updated_at", Thu, 09 Feb 2012 14:38:23 UTC +00:00]]
+  [1m[36m (0.0ms)[0m  [1mROLLBACK TO SAVEPOINT active_record_1[0m
+
+Sent mail to to@example.com (10ms)
+Date: Thu, 09 Feb 2012 09:38:23 -0500
+From: from@example.com
+Reply-To: reply_to@example.com
+To: to@example.com
+Cc: cc@example.com
+Message-ID: <4f33da5f8cd99_3eef3ff1ae034d345503e@dgmpro.local.mail>
+Subject: Hiya!
+Mime-Version: 1.0
+Content-Type: text/plain;
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+Papaya
+  [1m[35m (0.6ms)[0m  rollback transaction
+  [1m[36m (0.0ms)[0m  [1mbegin transaction[0m
+  Rendered sample_mailer/hello.text.erb (0.1ms)
+  [1m[35m (0.1ms)[0m  SAVEPOINT active_record_1
+  [1m[36mSQL (0.4ms)[0m  [1mINSERT INTO "emails" ("bcc_address", "cc_address", "content", "created_at", "from_address", "reply_to_address", "sent_at", "subject", "to_address", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)[0m  [["bcc_address", "bcc@example.com"], ["cc_address", "cc@example.com"], ["content", "Date: Thu, 09 Feb 2012 09:38:23 -0500\r\nFrom: from@example.com\r\nReply-To: reply_to@example.com\r\nTo: to@example.com\r\nCc: cc@example.com\r\nMessage-ID: <4f33da5f918c7_3eef3ff1ae034d34551fa@dgmpro.local.mail>\r\nSubject: Hiya!\r\nMime-Version: 1.0\r\nContent-Type: text/plain;\r\n charset=UTF-8\r\nContent-Transfer-Encoding: 7bit\r\n\r\nPapaya"], ["created_at", Thu, 09 Feb 2012 14:38:23 UTC +00:00], ["from_address", "from@example.com"], ["reply_to_address", "reply_to@example.com"], ["sent_at", nil], ["subject", "Hiya!"], ["to_address", "to@example.com"], ["updated_at", Thu, 09 Feb 2012 14:38:23 UTC +00:00]]
+  [1m[35m (0.0ms)[0m  ROLLBACK TO SAVEPOINT active_record_1
+
+Sent mail to to@example.com (10ms)
+Date: Thu, 09 Feb 2012 09:38:23 -0500
+From: from@example.com
+Reply-To: reply_to@example.com
+To: to@example.com
+Cc: cc@example.com
+Message-ID: <4f33da5f918c7_3eef3ff1ae034d34551fa@dgmpro.local.mail>
+Subject: Hiya!
+Mime-Version: 1.0
+Content-Type: text/plain;
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+Papaya
+  [1m[36m (0.5ms)[0m  [1mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  begin transaction
+  [1m[36m (0.0ms)[0m  [1mrollback transaction[0m
+  [1m[36m (0.1ms)[0m  [1mSELECT "schema_migrations"."version" FROM "schema_migrations" [0m
+Migrating to CreateEmails (20110804223859)
+Migrating to CreateDelayedJobs (20110804224806)
+  [1m[35m (0.0ms)[0m  begin transaction
+  [1m[36m (0.0ms)[0m  [1mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  begin transaction
+  Rendered sample_mailer/hello.text.erb (1.7ms)
+  [1m[36m (0.1ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35mSQL (4.4ms)[0m  INSERT INTO "emails" ("bcc_address", "cc_address", "content", "created_at", "from_address", "reply_to_address", "sent_at", "subject", "to_address", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)  [["bcc_address", "bcc@example.com"], ["cc_address", "cc@example.com"], ["content", "Date: Thu, 09 Feb 2012 09:59:18 -0500\r\nFrom: from@example.com\r\nReply-To: reply_to@example.com\r\nTo: to@example.com\r\nCc: cc@example.com\r\nMessage-ID: <4f33df46a5910_3f4a3fe180c34d3412298@dgmpro.local.mail>\r\nSubject: Hiya!\r\nMime-Version: 1.0\r\nContent-Type: text/plain;\r\n charset=UTF-8\r\nContent-Transfer-Encoding: 7bit\r\n\r\nPapaya"], ["created_at", Thu, 09 Feb 2012 14:59:18 UTC +00:00], ["from_address", "from@example.com"], ["reply_to_address", "reply_to@example.com"], ["sent_at", nil], ["subject", "Hiya!"], ["to_address", "to@example.com"], ["updated_at", Thu, 09 Feb 2012 14:59:18 UTC +00:00]]
+  [1m[36m (0.1ms)[0m  [1mROLLBACK TO SAVEPOINT active_record_1[0m
+
+Sent mail to to@example.com (23ms)
+Date: Thu, 09 Feb 2012 09:59:18 -0500
+From: from@example.com
+Reply-To: reply_to@example.com
+To: to@example.com
+Cc: cc@example.com
+Message-ID: <4f33df46a5910_3f4a3fe180c34d3412298@dgmpro.local.mail>
+Subject: Hiya!
+Mime-Version: 1.0
+Content-Type: text/plain;
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+Papaya
+  [1m[35m (0.5ms)[0m  rollback transaction
+  [1m[36m (0.0ms)[0m  [1mbegin transaction[0m
+  Rendered sample_mailer/hello.text.erb (0.0ms)
+  [1m[35m (0.1ms)[0m  SAVEPOINT active_record_1
+  [1m[36mSQL (0.4ms)[0m  [1mINSERT INTO "emails" ("bcc_address", "cc_address", "content", "created_at", "from_address", "reply_to_address", "sent_at", "subject", "to_address", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)[0m  [["bcc_address", "bcc@example.com"], ["cc_address", "cc@example.com"], ["content", "Date: Thu, 09 Feb 2012 09:59:18 -0500\r\nFrom: from@example.com\r\nReply-To: reply_to@example.com\r\nTo: to@example.com\r\nCc: cc@example.com\r\nMessage-ID: <4f33df46ac26b_3f4a3fe180c34d34123b2@dgmpro.local.mail>\r\nSubject: Hiya!\r\nMime-Version: 1.0\r\nContent-Type: text/plain;\r\n charset=UTF-8\r\nContent-Transfer-Encoding: 7bit\r\n\r\nPapaya"], ["created_at", Thu, 09 Feb 2012 14:59:18 UTC +00:00], ["from_address", "from@example.com"], ["reply_to_address", "reply_to@example.com"], ["sent_at", nil], ["subject", "Hiya!"], ["to_address", "to@example.com"], ["updated_at", Thu, 09 Feb 2012 14:59:18 UTC +00:00]]
+  [1m[35m (0.1ms)[0m  ROLLBACK TO SAVEPOINT active_record_1
+
+Sent mail to to@example.com (10ms)
+Date: Thu, 09 Feb 2012 09:59:18 -0500
+From: from@example.com
+Reply-To: reply_to@example.com
+To: to@example.com
+Cc: cc@example.com
+Message-ID: <4f33df46ac26b_3f4a3fe180c34d34123b2@dgmpro.local.mail>
+Subject: Hiya!
+Mime-Version: 1.0
+Content-Type: text/plain;
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+Papaya
+  [1m[36m (5.1ms)[0m  [1mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  begin transaction
+  Rendered sample_mailer/hello.text.erb (0.0ms)
+  [1m[36m (0.1ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35mSQL (0.5ms)[0m  INSERT INTO "emails" ("bcc_address", "cc_address", "content", "created_at", "from_address", "reply_to_address", "sent_at", "subject", "to_address", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)  [["bcc_address", "bcc@example.com"], ["cc_address", "cc@example.com"], ["content", "Date: Thu, 09 Feb 2012 09:59:18 -0500\r\nFrom: from@example.com\r\nReply-To: reply_to@example.com\r\nTo: to@example.com\r\nCc: cc@example.com\r\nMessage-ID: <4f33df46b8649_3f4a3fe180c34d3412435@dgmpro.local.mail>\r\nSubject: Hiya!\r\nMime-Version: 1.0\r\nContent-Type: text/plain;\r\n charset=UTF-8\r\nContent-Transfer-Encoding: 7bit\r\n\r\nPapaya"], ["created_at", Thu, 09 Feb 2012 14:59:18 UTC +00:00], ["from_address", "from@example.com"], ["reply_to_address", "reply_to@example.com"], ["sent_at", nil], ["subject", "Hiya!"], ["to_address", "to@example.com"], ["updated_at", Thu, 09 Feb 2012 14:59:18 UTC +00:00]]
+  [1m[36m (0.0ms)[0m  [1mROLLBACK TO SAVEPOINT active_record_1[0m
+
+Sent mail to to@example.com (10ms)
+Date: Thu, 09 Feb 2012 09:59:18 -0500
+From: from@example.com
+Reply-To: reply_to@example.com
+To: to@example.com
+Cc: cc@example.com
+Message-ID: <4f33df46b8649_3f4a3fe180c34d3412435@dgmpro.local.mail>
+Subject: Hiya!
+Mime-Version: 1.0
+Content-Type: text/plain;
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+Papaya
+  [1m[35m (0.6ms)[0m  rollback transaction
+  [1m[36m (0.0ms)[0m  [1mbegin transaction[0m
+  Rendered sample_mailer/hello.text.erb (0.1ms)
+  [1m[35m (0.1ms)[0m  SAVEPOINT active_record_1
+  [1m[36mSQL (0.4ms)[0m  [1mINSERT INTO "emails" ("bcc_address", "cc_address", "content", "created_at", "from_address", "reply_to_address", "sent_at", "subject", "to_address", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)[0m  [["bcc_address", "bcc@example.com"], ["cc_address", "cc@example.com"], ["content", "Date: Thu, 09 Feb 2012 09:59:18 -0500\r\nFrom: from@example.com\r\nReply-To: reply_to@example.com\r\nTo: to@example.com\r\nCc: cc@example.com\r\nMessage-ID: <4f33df46bd16d_3f4a3fe180c34d34125c5@dgmpro.local.mail>\r\nSubject: Hiya!\r\nMime-Version: 1.0\r\nContent-Type: text/plain;\r\n charset=UTF-8\r\nContent-Transfer-Encoding: 7bit\r\n\r\nPapaya"], ["created_at", Thu, 09 Feb 2012 14:59:18 UTC +00:00], ["from_address", "from@example.com"], ["reply_to_address", "reply_to@example.com"], ["sent_at", nil], ["subject", "Hiya!"], ["to_address", "to@example.com"], ["updated_at", Thu, 09 Feb 2012 14:59:18 UTC +00:00]]
+  [1m[35m (0.0ms)[0m  ROLLBACK TO SAVEPOINT active_record_1
+
+Sent mail to to@example.com (10ms)
+Date: Thu, 09 Feb 2012 09:59:18 -0500
+From: from@example.com
+Reply-To: reply_to@example.com
+To: to@example.com
+Cc: cc@example.com
+Message-ID: <4f33df46bd16d_3f4a3fe180c34d34125c5@dgmpro.local.mail>
+Subject: Hiya!
+Mime-Version: 1.0
+Content-Type: text/plain;
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+Papaya
+  [1m[36m (0.5ms)[0m  [1mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  begin transaction
+  [1m[36m (0.0ms)[0m  [1mrollback transaction[0m
+  [1m[36m (0.1ms)[0m  [1mSELECT "schema_migrations"."version" FROM "schema_migrations" [0m
+Migrating to CreateEmails (20110804223859)
+Migrating to CreateDelayedJobs (20110804224806)
+  [1m[35m (0.1ms)[0m  begin transaction
+  Rendered sample_mailer/hello.text.erb (1.9ms)
+  [1m[36m (0.1ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35mSQL (36.3ms)[0m  INSERT INTO "emails" ("bcc_address", "cc_address", "content", "created_at", "from_address", "reply_to_address", "sent_at", "subject", "to_address", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)  [["bcc_address", "bcc@example.com"], ["cc_address", "cc@example.com"], ["content", "Date: Thu, 09 Feb 2012 10:04:06 -0500\r\nFrom: from@example.com\r\nReply-To: reply_to@example.com\r\nTo: to@example.com\r\nCc: cc@example.com\r\nMessage-ID: <4f33e06655bc8_3f613fcd80434d3c472f6@dgmpro.local.mail>\r\nSubject: Hiya!\r\nMime-Version: 1.0\r\nContent-Type: text/plain;\r\n charset=UTF-8\r\nContent-Transfer-Encoding: 7bit\r\n\r\nPapaya"], ["created_at", Thu, 09 Feb 2012 15:04:06 UTC +00:00], ["from_address", "from@example.com"], ["reply_to_address", "reply_to@example.com"], ["sent_at", nil], ["subject", "Hiya!"], ["to_address", "to@example.com"], ["updated_at", Thu, 09 Feb 2012 15:04:06 UTC +00:00]]
+  [1m[36m (0.1ms)[0m  [1mROLLBACK TO SAVEPOINT active_record_1[0m
+
+Sent mail to to@example.com (77ms)
+Date: Thu, 09 Feb 2012 10:04:06 -0500
+From: from@example.com
+Reply-To: reply_to@example.com
+To: to@example.com
+Cc: cc@example.com
+Message-ID: <4f33e06655bc8_3f613fcd80434d3c472f6@dgmpro.local.mail>
+Subject: Hiya!
+Mime-Version: 1.0
+Content-Type: text/plain;
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+Papaya
+  [1m[35m (0.5ms)[0m  rollback transaction
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+  Rendered sample_mailer/hello.text.erb (0.1ms)
+  [1m[35m (0.1ms)[0m  SAVEPOINT active_record_1
+  [1m[36mSQL (0.6ms)[0m  [1mINSERT INTO "emails" ("bcc_address", "cc_address", "content", "created_at", "from_address", "reply_to_address", "sent_at", "subject", "to_address", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)[0m  [["bcc_address", "bcc@example.com"], ["cc_address", "cc@example.com"], ["content", "Date: Thu, 09 Feb 2012 10:04:06 -0500\r\nFrom: from@example.com\r\nReply-To: reply_to@example.com\r\nTo: to@example.com\r\nCc: cc@example.com\r\nMessage-ID: <4f33e0666c480_3f613fcd80434d3c4732c@dgmpro.local.mail>\r\nSubject: Hiya!\r\nMime-Version: 1.0\r\nContent-Type: text/plain;\r\n charset=UTF-8\r\nContent-Transfer-Encoding: 7bit\r\n\r\nPapaya"], ["created_at", Thu, 09 Feb 2012 15:04:06 UTC +00:00], ["from_address", "from@example.com"], ["reply_to_address", "reply_to@example.com"], ["sent_at", nil], ["subject", "Hiya!"], ["to_address", "to@example.com"], ["updated_at", Thu, 09 Feb 2012 15:04:06 UTC +00:00]]
+  [1m[35m (0.1ms)[0m  ROLLBACK TO SAVEPOINT active_record_1
+
+Sent mail to to@example.com (31ms)
+Date: Thu, 09 Feb 2012 10:04:06 -0500
+From: from@example.com
+Reply-To: reply_to@example.com
+To: to@example.com
+Cc: cc@example.com
+Message-ID: <4f33e0666c480_3f613fcd80434d3c4732c@dgmpro.local.mail>
+Subject: Hiya!
+Mime-Version: 1.0
+Content-Type: text/plain;
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+Papaya
+  [1m[36m (0.6ms)[0m  [1mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  begin transaction
+  Rendered sample_mailer/hello.text.erb (0.1ms)
+  [1m[36m (0.1ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35mSQL (0.6ms)[0m  INSERT INTO "emails" ("bcc_address", "cc_address", "content", "created_at", "from_address", "reply_to_address", "sent_at", "subject", "to_address", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)  [["bcc_address", "bcc@example.com"], ["cc_address", "cc@example.com"], ["content", "Date: Thu, 09 Feb 2012 10:04:06 -0500\r\nFrom: from@example.com\r\nReply-To: reply_to@example.com\r\nTo: to@example.com\r\nCc: cc@example.com\r\nMessage-ID: <4f33e06679375_3f613fcd80434d3c4744b@dgmpro.local.mail>\r\nSubject: Hiya!\r\nMime-Version: 1.0\r\nContent-Type: text/plain;\r\n charset=UTF-8\r\nContent-Transfer-Encoding: 7bit\r\n\r\nPapaya"], ["created_at", Thu, 09 Feb 2012 15:04:06 UTC +00:00], ["from_address", "from@example.com"], ["reply_to_address", "reply_to@example.com"], ["sent_at", nil], ["subject", "Hiya!"], ["to_address", "to@example.com"], ["updated_at", Thu, 09 Feb 2012 15:04:06 UTC +00:00]]
+  [1m[36m (0.1ms)[0m  [1mROLLBACK TO SAVEPOINT active_record_1[0m
+
+Sent mail to to@example.com (32ms)
+Date: Thu, 09 Feb 2012 10:04:06 -0500
+From: from@example.com
+Reply-To: reply_to@example.com
+To: to@example.com
+Cc: cc@example.com
+Message-ID: <4f33e06679375_3f613fcd80434d3c4744b@dgmpro.local.mail>
+Subject: Hiya!
+Mime-Version: 1.0
+Content-Type: text/plain;
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+Papaya
+  [1m[35m (0.6ms)[0m  rollback transaction
+  [1m[36m (0.0ms)[0m  [1mbegin transaction[0m
+  Rendered sample_mailer/hello.text.erb (0.1ms)
+  [1m[35m (0.1ms)[0m  SAVEPOINT active_record_1
+  [1m[36mSQL (0.6ms)[0m  [1mINSERT INTO "emails" ("bcc_address", "cc_address", "content", "created_at", "from_address", "reply_to_address", "sent_at", "subject", "to_address", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)[0m  [["bcc_address", "bcc@example.com"], ["cc_address", "cc@example.com"], ["content", "Date: Thu, 09 Feb 2012 10:04:06 -0500\r\nFrom: from@example.com\r\nReply-To: reply_to@example.com\r\nTo: to@example.com\r\nCc: cc@example.com\r\nMessage-ID: <4f33e06685ff0_3f613fcd80434d3c475e7@dgmpro.local.mail>\r\nSubject: Hiya!\r\nMime-Version: 1.0\r\nContent-Type: text/plain;\r\n charset=UTF-8\r\nContent-Transfer-Encoding: 7bit\r\n\r\nPapaya"], ["created_at", Thu, 09 Feb 2012 15:04:06 UTC +00:00], ["from_address", "from@example.com"], ["reply_to_address", "reply_to@example.com"], ["sent_at", nil], ["subject", "Hiya!"], ["to_address", "to@example.com"], ["updated_at", Thu, 09 Feb 2012 15:04:06 UTC +00:00]]
+  [1m[35m (0.1ms)[0m  ROLLBACK TO SAVEPOINT active_record_1
+
+Sent mail to to@example.com (32ms)
+Date: Thu, 09 Feb 2012 10:04:06 -0500
+From: from@example.com
+Reply-To: reply_to@example.com
+To: to@example.com
+Cc: cc@example.com
+Message-ID: <4f33e06685ff0_3f613fcd80434d3c475e7@dgmpro.local.mail>
+Subject: Hiya!
+Mime-Version: 1.0
+Content-Type: text/plain;
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+Papaya
+  [1m[36m (0.7ms)[0m  [1mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  begin transaction
+  [1m[36m (0.1ms)[0m  [1mrollback transaction[0m
+  [1m[36m (0.2ms)[0m  [1mSELECT "schema_migrations"."version" FROM "schema_migrations" [0m
+Migrating to CreateEmails (20110804223859)
+Migrating to CreateDelayedJobs (20110804224806)
+Migrating to AddQueueToDelayedJobs (20120209150616)
+  [1m[35m (0.0ms)[0m  select sqlite_version(*)
+  [1m[36m (0.0ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.4ms)[0m  ALTER TABLE "delayed_jobs" ADD "queue" varchar(255)
+  [1m[36m (0.1ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES ('20120209150616')[0m
+  [1m[35m (1.1ms)[0m  commit transaction
+  [1m[36m (0.1ms)[0m  [1mSELECT "schema_migrations"."version" FROM "schema_migrations" [0m
+Migrating to CreateEmails (20110804223859)
+Migrating to CreateDelayedJobs (20110804224806)
+Migrating to AddQueueToDelayedJobs (20120209150616)
+  [1m[35m (0.0ms)[0m  begin transaction
+  Rendered sample_mailer/hello.text.erb (2.1ms)
+  [1m[36m (0.1ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35mSQL (11.5ms)[0m  INSERT INTO "emails" ("bcc_address", "cc_address", "content", "created_at", "from_address", "reply_to_address", "sent_at", "subject", "to_address", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)  [["bcc_address", "bcc@example.com"], ["cc_address", "cc@example.com"], ["content", "Date: Thu, 09 Feb 2012 10:07:31 -0500\r\nFrom: from@example.com\r\nReply-To: reply_to@example.com\r\nTo: to@example.com\r\nCc: cc@example.com\r\nMessage-ID: <4f33e1338c2b3_3f913fe0e6034d44729ad@dgmpro.local.mail>\r\nSubject: Hiya!\r\nMime-Version: 1.0\r\nContent-Type: text/plain;\r\n charset=UTF-8\r\nContent-Transfer-Encoding: 7bit\r\n\r\nPapaya"], ["created_at", Thu, 09 Feb 2012 15:07:31 UTC +00:00], ["from_address", "from@example.com"], ["reply_to_address", "reply_to@example.com"], ["sent_at", nil], ["subject", "Hiya!"], ["to_address", "to@example.com"], ["updated_at", Thu, 09 Feb 2012 15:07:31 UTC +00:00]]
+  [1m[36m (0.1ms)[0m  [1mROLLBACK TO SAVEPOINT active_record_1[0m
+
+Sent mail to to@example.com (34ms)
+Date: Thu, 09 Feb 2012 10:07:31 -0500
+From: from@example.com
+Reply-To: reply_to@example.com
+To: to@example.com
+Cc: cc@example.com
+Message-ID: <4f33e1338c2b3_3f913fe0e6034d44729ad@dgmpro.local.mail>
+Subject: Hiya!
+Mime-Version: 1.0
+Content-Type: text/plain;
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+Papaya
+  [1m[35m (0.5ms)[0m  rollback transaction
+  [1m[36m (0.0ms)[0m  [1mbegin transaction[0m
+  Rendered sample_mailer/hello.text.erb (0.0ms)
+  [1m[35m (0.1ms)[0m  SAVEPOINT active_record_1
+  [1m[36mSQL (0.4ms)[0m  [1mINSERT INTO "emails" ("bcc_address", "cc_address", "content", "created_at", "from_address", "reply_to_address", "sent_at", "subject", "to_address", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)[0m  [["bcc_address", "bcc@example.com"], ["cc_address", "cc@example.com"], ["content", "Date: Thu, 09 Feb 2012 10:07:31 -0500\r\nFrom: from@example.com\r\nReply-To: reply_to@example.com\r\nTo: to@example.com\r\nCc: cc@example.com\r\nMessage-ID: <4f33e13394a84_3f913fe0e6034d44730ac@dgmpro.local.mail>\r\nSubject: Hiya!\r\nMime-Version: 1.0\r\nContent-Type: text/plain;\r\n charset=UTF-8\r\nContent-Transfer-Encoding: 7bit\r\n\r\nPapaya"], ["created_at", Thu, 09 Feb 2012 15:07:31 UTC +00:00], ["from_address", "from@example.com"], ["reply_to_address", "reply_to@example.com"], ["sent_at", nil], ["subject", "Hiya!"], ["to_address", "to@example.com"], ["updated_at", Thu, 09 Feb 2012 15:07:31 UTC +00:00]]
+  [1m[35m (0.1ms)[0m  ROLLBACK TO SAVEPOINT active_record_1
+
+Sent mail to to@example.com (10ms)
+Date: Thu, 09 Feb 2012 10:07:31 -0500
+From: from@example.com
+Reply-To: reply_to@example.com
+To: to@example.com
+Cc: cc@example.com
+Message-ID: <4f33e13394a84_3f913fe0e6034d44730ac@dgmpro.local.mail>
+Subject: Hiya!
+Mime-Version: 1.0
+Content-Type: text/plain;
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+Papaya
+  [1m[36m (0.7ms)[0m  [1mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  begin transaction
+  Rendered sample_mailer/hello.text.erb (0.1ms)
+  [1m[36m (0.1ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35mSQL (0.4ms)[0m  INSERT INTO "emails" ("bcc_address", "cc_address", "content", "created_at", "from_address", "reply_to_address", "sent_at", "subject", "to_address", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)  [["bcc_address", "bcc@example.com"], ["cc_address", "cc@example.com"], ["content", "Date: Thu, 09 Feb 2012 10:07:31 -0500\r\nFrom: from@example.com\r\nReply-To: reply_to@example.com\r\nTo: to@example.com\r\nCc: cc@example.com\r\nMessage-ID: <4f33e1339f850_3f913fe0e6034d447317@dgmpro.local.mail>\r\nSubject: Hiya!\r\nMime-Version: 1.0\r\nContent-Type: text/plain;\r\n charset=UTF-8\r\nContent-Transfer-Encoding: 7bit\r\n\r\nPapaya"], ["created_at", Thu, 09 Feb 2012 15:07:31 UTC +00:00], ["from_address", "from@example.com"], ["reply_to_address", "reply_to@example.com"], ["sent_at", nil], ["subject", "Hiya!"], ["to_address", "to@example.com"], ["updated_at", Thu, 09 Feb 2012 15:07:31 UTC +00:00]]
+  [1m[36m (0.0ms)[0m  [1mROLLBACK TO SAVEPOINT active_record_1[0m
+
+Sent mail to to@example.com (10ms)
+Date: Thu, 09 Feb 2012 10:07:31 -0500
+From: from@example.com
+Reply-To: reply_to@example.com
+To: to@example.com
+Cc: cc@example.com
+Message-ID: <4f33e1339f850_3f913fe0e6034d447317@dgmpro.local.mail>
+Subject: Hiya!
+Mime-Version: 1.0
+Content-Type: text/plain;
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+Papaya
+  [1m[35m (0.5ms)[0m  rollback transaction
+  [1m[36m (0.0ms)[0m  [1mbegin transaction[0m
+  Rendered sample_mailer/hello.text.erb (0.1ms)
+  [1m[35m (0.1ms)[0m  SAVEPOINT active_record_1
+  [1m[36mSQL (0.4ms)[0m  [1mINSERT INTO "emails" ("bcc_address", "cc_address", "content", "created_at", "from_address", "reply_to_address", "sent_at", "subject", "to_address", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)[0m  [["bcc_address", "bcc@example.com"], ["cc_address", "cc@example.com"], ["content", "Date: Thu, 09 Feb 2012 10:07:31 -0500\r\nFrom: from@example.com\r\nReply-To: reply_to@example.com\r\nTo: to@example.com\r\nCc: cc@example.com\r\nMessage-ID: <4f33e133a452f_3f913fe0e6034d447321f@dgmpro.local.mail>\r\nSubject: Hiya!\r\nMime-Version: 1.0\r\nContent-Type: text/plain;\r\n charset=UTF-8\r\nContent-Transfer-Encoding: 7bit\r\n\r\nPapaya"], ["created_at", Thu, 09 Feb 2012 15:07:31 UTC +00:00], ["from_address", "from@example.com"], ["reply_to_address", "reply_to@example.com"], ["sent_at", nil], ["subject", "Hiya!"], ["to_address", "to@example.com"], ["updated_at", Thu, 09 Feb 2012 15:07:31 UTC +00:00]]
+  [1m[35m (0.0ms)[0m  ROLLBACK TO SAVEPOINT active_record_1
+
+Sent mail to to@example.com (10ms)
+Date: Thu, 09 Feb 2012 10:07:31 -0500
+From: from@example.com
+Reply-To: reply_to@example.com
+To: to@example.com
+Cc: cc@example.com
+Message-ID: <4f33e133a452f_3f913fe0e6034d447321f@dgmpro.local.mail>
+Subject: Hiya!
+Mime-Version: 1.0
+Content-Type: text/plain;
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+Papaya
+  [1m[36m (0.5ms)[0m  [1mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  begin transaction
+  [1m[36m (0.0ms)[0m  [1mrollback transaction[0m
+  [1m[36m (0.1ms)[0m  [1mSELECT "schema_migrations"."version" FROM "schema_migrations" [0m
+Migrating to CreateEmails (20110804223859)
+Migrating to CreateDelayedJobs (20110804224806)
+Migrating to AddQueueToDelayedJobs (20120209150616)
+  [1m[35m (0.0ms)[0m  begin transaction
+  Rendered sample_mailer/hello.text.erb (1.8ms)
+  [1m[36m (0.1ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35mSQL (4.1ms)[0m  INSERT INTO "emails" ("bcc_address", "cc_address", "content", "created_at", "from_address", "reply_to_address", "sent_at", "subject", "to_address", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)  [["bcc_address", "bcc@example.com"], ["cc_address", "cc@example.com"], ["content", "Date: Thu, 09 Feb 2012 10:12:11 -0500\r\nFrom: from@example.com\r\nReply-To: reply_to@example.com\r\nTo: to@example.com\r\nCc: cc@example.com\r\nMessage-ID: <4f33e24bce66a_3fae3fc23d034d34527f5@dgmpro.local.mail>\r\nSubject: Hiya!\r\nMime-Version: 1.0\r\nContent-Type: text/plain;\r\n charset=UTF-8\r\nContent-Transfer-Encoding: 7bit\r\n\r\nPapaya"], ["created_at", Thu, 09 Feb 2012 15:12:11 UTC +00:00], ["from_address", "from@example.com"], ["reply_to_address", "reply_to@example.com"], ["sent_at", nil], ["subject", "Hiya!"], ["to_address", "to@example.com"], ["updated_at", Thu, 09 Feb 2012 15:12:11 UTC +00:00]]
+  [1m[36m (0.1ms)[0m  [1mROLLBACK TO SAVEPOINT active_record_1[0m
+
+Sent mail to to@example.com (24ms)
+Date: Thu, 09 Feb 2012 10:12:11 -0500
+From: from@example.com
+Reply-To: reply_to@example.com
+To: to@example.com
+Cc: cc@example.com
+Message-ID: <4f33e24bce66a_3fae3fc23d034d34527f5@dgmpro.local.mail>
+Subject: Hiya!
+Mime-Version: 1.0
+Content-Type: text/plain;
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+Papaya
+  [1m[35m (0.5ms)[0m  rollback transaction
+  [1m[36m (0.0ms)[0m  [1mbegin transaction[0m
+  Rendered sample_mailer/hello.text.erb (0.1ms)
+  [1m[35m (0.1ms)[0m  SAVEPOINT active_record_1
+  [1m[36mSQL (0.4ms)[0m  [1mINSERT INTO "emails" ("bcc_address", "cc_address", "content", "created_at", "from_address", "reply_to_address", "sent_at", "subject", "to_address", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)[0m  [["bcc_address", "bcc@example.com"], ["cc_address", "cc@example.com"], ["content", "Date: Thu, 09 Feb 2012 10:12:11 -0500\r\nFrom: from@example.com\r\nReply-To: reply_to@example.com\r\nTo: to@example.com\r\nCc: cc@example.com\r\nMessage-ID: <4f33e24bd52cb_3fae3fc23d034d3452825@dgmpro.local.mail>\r\nSubject: Hiya!\r\nMime-Version: 1.0\r\nContent-Type: text/plain;\r\n charset=UTF-8\r\nContent-Transfer-Encoding: 7bit\r\n\r\nPapaya"], ["created_at", Thu, 09 Feb 2012 15:12:11 UTC +00:00], ["from_address", "from@example.com"], ["reply_to_address", "reply_to@example.com"], ["sent_at", nil], ["subject", "Hiya!"], ["to_address", "to@example.com"], ["updated_at", Thu, 09 Feb 2012 15:12:11 UTC +00:00]]
+  [1m[35m (0.1ms)[0m  ROLLBACK TO SAVEPOINT active_record_1
+
+Sent mail to to@example.com (10ms)
+Date: Thu, 09 Feb 2012 10:12:11 -0500
+From: from@example.com
+Reply-To: reply_to@example.com
+To: to@example.com
+Cc: cc@example.com
+Message-ID: <4f33e24bd52cb_3fae3fc23d034d3452825@dgmpro.local.mail>
+Subject: Hiya!
+Mime-Version: 1.0
+Content-Type: text/plain;
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+Papaya
+  [1m[36m (0.7ms)[0m  [1mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  begin transaction
+  Rendered sample_mailer/hello.text.erb (0.1ms)
+  [1m[36m (0.1ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35mSQL (0.4ms)[0m  INSERT INTO "emails" ("bcc_address", "cc_address", "content", "created_at", "from_address", "reply_to_address", "sent_at", "subject", "to_address", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)  [["bcc_address", "bcc@example.com"], ["cc_address", "cc@example.com"], ["content", "Date: Thu, 09 Feb 2012 10:12:11 -0500\r\nFrom: from@example.com\r\nReply-To: reply_to@example.com\r\nTo: to@example.com\r\nCc: cc@example.com\r\nMessage-ID: <4f33e24be02bf_3fae3fc23d034d3452918@dgmpro.local.mail>\r\nSubject: Hiya!\r\nMime-Version: 1.0\r\nContent-Type: text/plain;\r\n charset=UTF-8\r\nContent-Transfer-Encoding: 7bit\r\n\r\nPapaya"], ["created_at", Thu, 09 Feb 2012 15:12:11 UTC +00:00], ["from_address", "from@example.com"], ["reply_to_address", "reply_to@example.com"], ["sent_at", nil], ["subject", "Hiya!"], ["to_address", "to@example.com"], ["updated_at", Thu, 09 Feb 2012 15:12:11 UTC +00:00]]
+  [1m[36m (0.0ms)[0m  [1mROLLBACK TO SAVEPOINT active_record_1[0m
+
+Sent mail to to@example.com (10ms)
+Date: Thu, 09 Feb 2012 10:12:11 -0500
+From: from@example.com
+Reply-To: reply_to@example.com
+To: to@example.com
+Cc: cc@example.com
+Message-ID: <4f33e24be02bf_3fae3fc23d034d3452918@dgmpro.local.mail>
+Subject: Hiya!
+Mime-Version: 1.0
+Content-Type: text/plain;
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+Papaya
+  [1m[35m (0.6ms)[0m  rollback transaction
+  [1m[36m (0.0ms)[0m  [1mbegin transaction[0m
+  Rendered sample_mailer/hello.text.erb (0.0ms)
+  [1m[35m (0.0ms)[0m  SAVEPOINT active_record_1
+  [1m[36mSQL (0.4ms)[0m  [1mINSERT INTO "emails" ("bcc_address", "cc_address", "content", "created_at", "from_address", "reply_to_address", "sent_at", "subject", "to_address", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)[0m  [["bcc_address", "bcc@example.com"], ["cc_address", "cc@example.com"], ["content", "Date: Thu, 09 Feb 2012 10:12:11 -0500\r\nFrom: from@example.com\r\nReply-To: reply_to@example.com\r\nTo: to@example.com\r\nCc: cc@example.com\r\nMessage-ID: <4f33e24be4c5d_3fae3fc23d034d3453096@dgmpro.local.mail>\r\nSubject: Hiya!\r\nMime-Version: 1.0\r\nContent-Type: text/plain;\r\n charset=UTF-8\r\nContent-Transfer-Encoding: 7bit\r\n\r\nPapaya"], ["created_at", Thu, 09 Feb 2012 15:12:11 UTC +00:00], ["from_address", "from@example.com"], ["reply_to_address", "reply_to@example.com"], ["sent_at", nil], ["subject", "Hiya!"], ["to_address", "to@example.com"], ["updated_at", Thu, 09 Feb 2012 15:12:11 UTC +00:00]]
+  [1m[35m (0.0ms)[0m  ROLLBACK TO SAVEPOINT active_record_1
+
+Sent mail to to@example.com (10ms)
+Date: Thu, 09 Feb 2012 10:12:11 -0500
+From: from@example.com
+Reply-To: reply_to@example.com
+To: to@example.com
+Cc: cc@example.com
+Message-ID: <4f33e24be4c5d_3fae3fc23d034d3453096@dgmpro.local.mail>
+Subject: Hiya!
+Mime-Version: 1.0
+Content-Type: text/plain;
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+Papaya
+  [1m[36m (0.5ms)[0m  [1mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  begin transaction
+  [1m[36m (0.0ms)[0m  [1mrollback transaction[0m
+  [1m[36m (0.1ms)[0m  [1mSELECT "schema_migrations"."version" FROM "schema_migrations" [0m
+Migrating to CreateEmails (20110804223859)
+Migrating to CreateDelayedJobs (20110804224806)
+Migrating to AddQueueToDelayedJobs (20120209150616)
+  [1m[35m (0.0ms)[0m  begin transaction
+  Rendered sample_mailer/hello.text.erb (1.8ms)
+  [1m[36m (0.1ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35mSQL (7.5ms)[0m  INSERT INTO "emails" ("bcc_address", "cc_address", "content", "created_at", "from_address", "reply_to_address", "sent_at", "subject", "to_address", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)  [["bcc_address", "bcc@example.com"], ["cc_address", "cc@example.com"], ["content", "Date: Thu, 09 Feb 2012 10:12:58 -0500\r\nFrom: from@example.com\r\nReply-To: reply_to@example.com\r\nTo: to@example.com\r\nCc: cc@example.com\r\nMessage-ID: <4f33e27a12363_3fbb3ff950434d40427d6@dgmpro.local.mail>\r\nSubject: Hiya!\r\nMime-Version: 1.0\r\nContent-Type: text/plain;\r\n charset=UTF-8\r\nContent-Transfer-Encoding: 7bit\r\n\r\nPapaya"], ["created_at", Thu, 09 Feb 2012 15:12:58 UTC +00:00], ["from_address", "from@example.com"], ["reply_to_address", "reply_to@example.com"], ["sent_at", nil], ["subject", "Hiya!"], ["to_address", "to@example.com"], ["updated_at", Thu, 09 Feb 2012 15:12:58 UTC +00:00]]
+  [1m[36m (0.1ms)[0m  [1mROLLBACK TO SAVEPOINT active_record_1[0m
+
+Sent mail to to@example.com (27ms)
+Date: Thu, 09 Feb 2012 10:12:58 -0500
+From: from@example.com
+Reply-To: reply_to@example.com
+To: to@example.com
+Cc: cc@example.com
+Message-ID: <4f33e27a12363_3fbb3ff950434d40427d6@dgmpro.local.mail>
+Subject: Hiya!
+Mime-Version: 1.0
+Content-Type: text/plain;
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+Papaya
+  [1m[35m (0.5ms)[0m  rollback transaction
+  [1m[36m (0.0ms)[0m  [1mbegin transaction[0m
+  Rendered sample_mailer/hello.text.erb (0.1ms)
+  [1m[35m (0.0ms)[0m  SAVEPOINT active_record_1
+  [1m[36mSQL (0.4ms)[0m  [1mINSERT INTO "emails" ("bcc_address", "cc_address", "content", "created_at", "from_address", "reply_to_address", "sent_at", "subject", "to_address", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)[0m  [["bcc_address", "bcc@example.com"], ["cc_address", "cc@example.com"], ["content", "Date: Thu, 09 Feb 2012 10:12:58 -0500\r\nFrom: from@example.com\r\nReply-To: reply_to@example.com\r\nTo: to@example.com\r\nCc: cc@example.com\r\nMessage-ID: <4f33e27a19d8e_3fbb3ff950434d40428c9@dgmpro.local.mail>\r\nSubject: Hiya!\r\nMime-Version: 1.0\r\nContent-Type: text/plain;\r\n charset=UTF-8\r\nContent-Transfer-Encoding: 7bit\r\n\r\nPapaya"], ["created_at", Thu, 09 Feb 2012 15:12:58 UTC +00:00], ["from_address", "from@example.com"], ["reply_to_address", "reply_to@example.com"], ["sent_at", nil], ["subject", "Hiya!"], ["to_address", "to@example.com"], ["updated_at", Thu, 09 Feb 2012 15:12:58 UTC +00:00]]
+  [1m[35m (0.0ms)[0m  ROLLBACK TO SAVEPOINT active_record_1
+
+Sent mail to to@example.com (10ms)
+Date: Thu, 09 Feb 2012 10:12:58 -0500
+From: from@example.com
+Reply-To: reply_to@example.com
+To: to@example.com
+Cc: cc@example.com
+Message-ID: <4f33e27a19d8e_3fbb3ff950434d40428c9@dgmpro.local.mail>
+Subject: Hiya!
+Mime-Version: 1.0
+Content-Type: text/plain;
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+Papaya
+  [1m[36m (15.7ms)[0m  [1mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  begin transaction
+  Rendered sample_mailer/hello.text.erb (0.1ms)
+  [1m[36m (0.1ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35mSQL (0.4ms)[0m  INSERT INTO "emails" ("bcc_address", "cc_address", "content", "created_at", "from_address", "reply_to_address", "sent_at", "subject", "to_address", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)  [["bcc_address", "bcc@example.com"], ["cc_address", "cc@example.com"], ["content", "Date: Thu, 09 Feb 2012 10:12:58 -0500\r\nFrom: from@example.com\r\nReply-To: reply_to@example.com\r\nTo: to@example.com\r\nCc: cc@example.com\r\nMessage-ID: <4f33e27a226d2_3fbb3ff950434d4042983@dgmpro.local.mail>\r\nSubject: Hiya!\r\nMime-Version: 1.0\r\nContent-Type: text/plain;\r\n charset=UTF-8\r\nContent-Transfer-Encoding: 7bit\r\n\r\nPapaya"], ["created_at", Thu, 09 Feb 2012 15:12:58 UTC +00:00], ["from_address", "from@example.com"], ["reply_to_address", "reply_to@example.com"], ["sent_at", nil], ["subject", "Hiya!"], ["to_address", "to@example.com"], ["updated_at", Thu, 09 Feb 2012 15:12:58 UTC +00:00]]
+  [1m[36m (0.1ms)[0m  [1mROLLBACK TO SAVEPOINT active_record_1[0m
+
+Sent mail to to@example.com (36ms)
+Date: Thu, 09 Feb 2012 10:12:58 -0500
+From: from@example.com
+Reply-To: reply_to@example.com
+To: to@example.com
+Cc: cc@example.com
+Message-ID: <4f33e27a226d2_3fbb3ff950434d4042983@dgmpro.local.mail>
+Subject: Hiya!
+Mime-Version: 1.0
+Content-Type: text/plain;
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+Papaya
+  [1m[35m (0.5ms)[0m  rollback transaction
+  [1m[36m (0.0ms)[0m  [1mbegin transaction[0m
+  Rendered sample_mailer/hello.text.erb (0.1ms)
+  [1m[35m (0.1ms)[0m  SAVEPOINT active_record_1
+  [1m[36mSQL (0.4ms)[0m  [1mINSERT INTO "emails" ("bcc_address", "cc_address", "content", "created_at", "from_address", "reply_to_address", "sent_at", "subject", "to_address", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)[0m  [["bcc_address", "bcc@example.com"], ["cc_address", "cc@example.com"], ["content", "Date: Thu, 09 Feb 2012 10:12:58 -0500\r\nFrom: from@example.com\r\nReply-To: reply_to@example.com\r\nTo: to@example.com\r\nCc: cc@example.com\r\nMessage-ID: <4f33e27a2d8ef_3fbb3ff950434d40430d1@dgmpro.local.mail>\r\nSubject: Hiya!\r\nMime-Version: 1.0\r\nContent-Type: text/plain;\r\n charset=UTF-8\r\nContent-Transfer-Encoding: 7bit\r\n\r\nPapaya"], ["created_at", Thu, 09 Feb 2012 15:12:58 UTC +00:00], ["from_address", "from@example.com"], ["reply_to_address", "reply_to@example.com"], ["sent_at", nil], ["subject", "Hiya!"], ["to_address", "to@example.com"], ["updated_at", Thu, 09 Feb 2012 15:12:58 UTC +00:00]]
+  [1m[35m (0.1ms)[0m  ROLLBACK TO SAVEPOINT active_record_1
+
+Sent mail to to@example.com (10ms)
+Date: Thu, 09 Feb 2012 10:12:58 -0500
+From: from@example.com
+Reply-To: reply_to@example.com
+To: to@example.com
+Cc: cc@example.com
+Message-ID: <4f33e27a2d8ef_3fbb3ff950434d40430d1@dgmpro.local.mail>
+Subject: Hiya!
+Mime-Version: 1.0
+Content-Type: text/plain;
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+Papaya
+  [1m[36m (0.6ms)[0m  [1mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  begin transaction
+  [1m[36m (0.0ms)[0m  [1mrollback transaction[0m
+  [1m[36m (0.1ms)[0m  [1mSELECT "schema_migrations"."version" FROM "schema_migrations" [0m
+Migrating to CreateEmails (20110804223859)
+Migrating to CreateDelayedJobs (20110804224806)
+Migrating to AddQueueToDelayedJobs (20120209150616)
+  [1m[35m (0.1ms)[0m  begin transaction
+  Rendered sample_mailer/hello.text.erb (1.8ms)
+  [1m[36m (0.1ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35mSQL (4.6ms)[0m  INSERT INTO "emails" ("bcc_address", "cc_address", "content", "created_at", "from_address", "reply_to_address", "sent_at", "subject", "to_address", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)  [["bcc_address", "bcc@example.com"], ["cc_address", "cc@example.com"], ["content", "Date: Thu, 09 Feb 2012 10:40:39 -0500\r\nFrom: from@example.com\r\nReply-To: reply_to@example.com\r\nTo: to@example.com\r\nCc: cc@example.com\r\nMessage-ID: <4f33e8f732e0a_40133fd8d5434d40397a7@dgmpro.local.mail>\r\nSubject: Hiya!\r\nMime-Version: 1.0\r\nContent-Type: text/plain;\r\n charset=UTF-8\r\nContent-Transfer-Encoding: 7bit\r\n\r\nPapaya"], ["created_at", Thu, 09 Feb 2012 15:40:39 UTC +00:00], ["from_address", "from@example.com"], ["reply_to_address", "reply_to@example.com"], ["sent_at", nil], ["subject", "Hiya!"], ["to_address", "to@example.com"], ["updated_at", Thu, 09 Feb 2012 15:40:39 UTC +00:00]]
+  [1m[36mSQL (21.9ms)[0m  [1mINSERT INTO "delayed_jobs" ("attempts", "created_at", "failed_at", "handler", "last_error", "locked_at", "locked_by", "priority", "queue", "run_at", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)[0m  [["attempts", 0], ["created_at", Thu, 09 Feb 2012 15:40:39 UTC +00:00], ["failed_at", nil], ["handler", "--- !ruby/struct:DelayedMailhopper::SendJob\nid: 1\n"], ["last_error", nil], ["locked_at", nil], ["locked_by", nil], ["priority", 0], ["queue", nil], ["run_at", Thu, 09 Feb 2012 15:40:39 UTC +00:00], ["updated_at", Thu, 09 Feb 2012 15:40:39 UTC +00:00]]
+  [1m[35m (0.4ms)[0m  UPDATE "emails" SET "to_address" = 'to@example.com', "from_address" = 'from@example.com', "cc_address" = 'cc@example.com', "bcc_address" = 'bcc@example.com', "reply_to_address" = 'reply_to@example.com', "subject" = 'Hiya!', "content" = 'Date: Thu, 09 Feb 2012 10:40:39 -0500
+From: from@example.com
+Reply-To: reply_to@example.com
+To: to@example.com
+Cc: cc@example.com
+Message-ID: <4f33e8f732e0a_40133fd8d5434d40397a7@dgmpro.local.mail>
+Subject: Hiya!
+Mime-Version: 1.0
+Content-Type: text/plain;
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+Papaya', "created_at" = '2012-02-09 15:40:39.219748', "updated_at" = '2012-02-09 15:40:39.219748' WHERE "emails"."id" = 1
+  [1m[36m (0.0ms)[0m  [1mRELEASE SAVEPOINT active_record_1[0m
+
+Sent mail to to@example.com (89ms)
+Date: Thu, 09 Feb 2012 10:40:39 -0500
+From: from@example.com
+Reply-To: reply_to@example.com
+To: to@example.com
+Cc: cc@example.com
+Message-ID: <4f33e8f732e0a_40133fd8d5434d40397a7@dgmpro.local.mail>
+Subject: Hiya!
+Mime-Version: 1.0
+Content-Type: text/plain;
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+Papaya
+  [1m[35mDelayedMailhopper::Email Load (0.2ms)[0m  SELECT "emails".* FROM "emails" ORDER BY created_at DESC LIMIT 1
+  [1m[36mDelayed::Backend::ActiveRecord::Job Load (0.1ms)[0m  [1mSELECT "delayed_jobs".* FROM "delayed_jobs" LIMIT 1[0m
+  [1m[35mDelayedMailhopper::Email Load (0.1ms)[0m  SELECT "emails".* FROM "emails" WHERE "emails"."id" = ? ORDER BY created_at DESC LIMIT 1  [["id", 1]]
+
+Sent mail to to@example.com (33ms)
+Date: Thu, 09 Feb 2012 10:40:39 -0500
+From: from@example.com
+Reply-To: reply_to@example.com
+To: to@example.com
+Cc: cc@example.com
+Message-ID: <4f33e8f732e0a_40133fd8d5434d40397a7@dgmpro.local.mail>
+Subject: Hiya!
+Mime-Version: 1.0
+Content-Type: text/plain;
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+Papaya
+  [1m[36m (0.1ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35m (0.1ms)[0m  UPDATE "emails" SET "sent_at" = '2012-02-09 15:40:39.337390', "updated_at" = '2012-02-09 15:40:39.337865' WHERE "emails"."id" = 1
+  [1m[36m (0.0ms)[0m  [1mRELEASE SAVEPOINT active_record_1[0m
+[DelayedMailhopper::SendJob] success for email_id 1, delayed_job_id 1
+  [1m[35mDelayedMailhopper::Email Load (0.1ms)[0m  SELECT "emails".* FROM "emails" WHERE "emails"."id" = ? LIMIT 1  [["id", 1]]
+  [1m[36m (0.5ms)[0m  [1mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  begin transaction
+  Rendered sample_mailer/hello.text.erb (0.1ms)
+  [1m[36m (0.1ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35mSQL (0.5ms)[0m  INSERT INTO "emails" ("bcc_address", "cc_address", "content", "created_at", "from_address", "reply_to_address", "sent_at", "subject", "to_address", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)  [["bcc_address", "bcc@example.com"], ["cc_address", "cc@example.com"], ["content", "Date: Thu, 09 Feb 2012 10:40:39 -0500\r\nFrom: from@example.com\r\nReply-To: reply_to@example.com\r\nTo: to@example.com\r\nCc: cc@example.com\r\nMessage-ID: <4f33e8f755951_40133fd8d5434d40398d2@dgmpro.local.mail>\r\nSubject: Hiya!\r\nMime-Version: 1.0\r\nContent-Type: text/plain;\r\n charset=UTF-8\r\nContent-Transfer-Encoding: 7bit\r\n\r\nPapaya"], ["created_at", Thu, 09 Feb 2012 15:40:39 UTC +00:00], ["from_address", "from@example.com"], ["reply_to_address", "reply_to@example.com"], ["sent_at", nil], ["subject", "Hiya!"], ["to_address", "to@example.com"], ["updated_at", Thu, 09 Feb 2012 15:40:39 UTC +00:00]]
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO "delayed_jobs" ("attempts", "created_at", "failed_at", "handler", "last_error", "locked_at", "locked_by", "priority", "queue", "run_at", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)[0m  [["attempts", 0], ["created_at", Thu, 09 Feb 2012 15:40:39 UTC +00:00], ["failed_at", nil], ["handler", "--- !ruby/struct:DelayedMailhopper::SendJob\nid: 1\n"], ["last_error", nil], ["locked_at", nil], ["locked_by", nil], ["priority", 0], ["queue", nil], ["run_at", Thu, 09 Feb 2012 15:40:39 UTC +00:00], ["updated_at", Thu, 09 Feb 2012 15:40:39 UTC +00:00]]
+  [1m[35m (0.3ms)[0m  UPDATE "emails" SET "to_address" = 'to@example.com', "from_address" = 'from@example.com', "cc_address" = 'cc@example.com', "bcc_address" = 'bcc@example.com', "reply_to_address" = 'reply_to@example.com', "subject" = 'Hiya!', "content" = 'Date: Thu, 09 Feb 2012 10:40:39 -0500
+From: from@example.com
+Reply-To: reply_to@example.com
+To: to@example.com
+Cc: cc@example.com
+Message-ID: <4f33e8f755951_40133fd8d5434d40398d2@dgmpro.local.mail>
+Subject: Hiya!
+Mime-Version: 1.0
+Content-Type: text/plain;
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+Papaya', "created_at" = '2012-02-09 15:40:39.357656', "updated_at" = '2012-02-09 15:40:39.357656' WHERE "emails"."id" = 1
+  [1m[36m (0.0ms)[0m  [1mRELEASE SAVEPOINT active_record_1[0m
+
+Sent mail to to@example.com (13ms)
+Date: Thu, 09 Feb 2012 10:40:39 -0500
+From: from@example.com
+Reply-To: reply_to@example.com
+To: to@example.com
+Cc: cc@example.com
+Message-ID: <4f33e8f755951_40133fd8d5434d40398d2@dgmpro.local.mail>
+Subject: Hiya!
+Mime-Version: 1.0
+Content-Type: text/plain;
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+Papaya
+  [1m[35mDelayedMailhopper::Email Load (0.2ms)[0m  SELECT "emails".* FROM "emails" ORDER BY created_at DESC LIMIT 1
+
+Sent mail to to@example.com (7ms)
+Date: Thu, 09 Feb 2012 10:40:39 -0500
+From: from@example.com
+Reply-To: reply_to@example.com
+To: to@example.com
+Cc: cc@example.com
+Message-ID: <4f33e8f755951_40133fd8d5434d40398d2@dgmpro.local.mail>
+Subject: Hiya!
+Mime-Version: 1.0
+Content-Type: text/plain;
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+Papaya
+  [1m[36m (0.1ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35m (0.1ms)[0m  UPDATE "emails" SET "sent_at" = '2012-02-09 15:40:39.380107', "updated_at" = '2012-02-09 15:40:39.380635' WHERE "emails"."id" = 1
+  [1m[36m (0.0ms)[0m  [1mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (0.5ms)[0m  rollback transaction
+  [1m[36m (0.0ms)[0m  [1mbegin transaction[0m
+  Rendered sample_mailer/hello.text.erb (0.1ms)
+  [1m[35m (0.1ms)[0m  SAVEPOINT active_record_1
+  [1m[36mSQL (0.5ms)[0m  [1mINSERT INTO "emails" ("bcc_address", "cc_address", "content", "created_at", "from_address", "reply_to_address", "sent_at", "subject", "to_address", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)[0m  [["bcc_address", "bcc@example.com"], ["cc_address", "cc@example.com"], ["content", "Date: Thu, 09 Feb 2012 10:40:39 -0500\r\nFrom: from@example.com\r\nReply-To: reply_to@example.com\r\nTo: to@example.com\r\nCc: cc@example.com\r\nMessage-ID: <4f33e8f75fd5b_40133fd8d5434d4039928@dgmpro.local.mail>\r\nSubject: Hiya!\r\nMime-Version: 1.0\r\nContent-Type: text/plain;\r\n charset=UTF-8\r\nContent-Transfer-Encoding: 7bit\r\n\r\nPapaya"], ["created_at", Thu, 09 Feb 2012 15:40:39 UTC +00:00], ["from_address", "from@example.com"], ["reply_to_address", "reply_to@example.com"], ["sent_at", nil], ["subject", "Hiya!"], ["to_address", "to@example.com"], ["updated_at", Thu, 09 Feb 2012 15:40:39 UTC +00:00]]
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO "delayed_jobs" ("attempts", "created_at", "failed_at", "handler", "last_error", "locked_at", "locked_by", "priority", "queue", "run_at", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)  [["attempts", 0], ["created_at", Thu, 09 Feb 2012 15:40:39 UTC +00:00], ["failed_at", nil], ["handler", "--- !ruby/struct:DelayedMailhopper::SendJob\nid: 1\n"], ["last_error", nil], ["locked_at", nil], ["locked_by", nil], ["priority", 0], ["queue", nil], ["run_at", Thu, 09 Feb 2012 15:40:39 UTC +00:00], ["updated_at", Thu, 09 Feb 2012 15:40:39 UTC +00:00]]
+  [1m[36m (0.3ms)[0m  [1mUPDATE "emails" SET "to_address" = 'to@example.com', "from_address" = 'from@example.com', "cc_address" = 'cc@example.com', "bcc_address" = 'bcc@example.com', "reply_to_address" = 'reply_to@example.com', "subject" = 'Hiya!', "content" = 'Date: Thu, 09 Feb 2012 10:40:39 -0500
+From: from@example.com
+Reply-To: reply_to@example.com
+To: to@example.com
+Cc: cc@example.com
+Message-ID: <4f33e8f75fd5b_40133fd8d5434d4039928@dgmpro.local.mail>
+Subject: Hiya!
+Mime-Version: 1.0
+Content-Type: text/plain;
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+Papaya', "created_at" = '2012-02-09 15:40:39.399672', "updated_at" = '2012-02-09 15:40:39.399672' WHERE "emails"."id" = 1[0m
+  [1m[35m (0.0ms)[0m  RELEASE SAVEPOINT active_record_1
+
+Sent mail to to@example.com (14ms)
+Date: Thu, 09 Feb 2012 10:40:39 -0500
+From: from@example.com
+Reply-To: reply_to@example.com
+To: to@example.com
+Cc: cc@example.com
+Message-ID: <4f33e8f75fd5b_40133fd8d5434d4039928@dgmpro.local.mail>
+Subject: Hiya!
+Mime-Version: 1.0
+Content-Type: text/plain;
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+Papaya
+  [1m[36m (0.2ms)[0m  [1mSELECT COUNT(*) FROM "emails" [0m
+  [1m[35m (0.1ms)[0m  SELECT COUNT(*) FROM "delayed_jobs" 
+  [1m[36m (0.6ms)[0m  [1mrollback transaction[0m
+  [1m[35m (0.1ms)[0m  begin transaction
+  Rendered sample_mailer/hello.text.erb (0.1ms)
+  [1m[36m (0.1ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35mSQL (0.5ms)[0m  INSERT INTO "emails" ("bcc_address", "cc_address", "content", "created_at", "from_address", "reply_to_address", "sent_at", "subject", "to_address", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)  [["bcc_address", "bcc@example.com"], ["cc_address", "cc@example.com"], ["content", "Date: Thu, 09 Feb 2012 10:40:39 -0500\r\nFrom: from@example.com\r\nReply-To: reply_to@example.com\r\nTo: to@example.com\r\nCc: cc@example.com\r\nMessage-ID: <4f33e8f766f20_40133fd8d5434d40400b@dgmpro.local.mail>\r\nSubject: Hiya!\r\nMime-Version: 1.0\r\nContent-Type: text/plain;\r\n charset=UTF-8\r\nContent-Transfer-Encoding: 7bit\r\n\r\nPapaya"], ["created_at", Thu, 09 Feb 2012 15:40:39 UTC +00:00], ["from_address", "from@example.com"], ["reply_to_address", "reply_to@example.com"], ["sent_at", nil], ["subject", "Hiya!"], ["to_address", "to@example.com"], ["updated_at", Thu, 09 Feb 2012 15:40:39 UTC +00:00]]
+  [1m[36mSQL (0.3ms)[0m  [1mINSERT INTO "delayed_jobs" ("attempts", "created_at", "failed_at", "handler", "last_error", "locked_at", "locked_by", "priority", "queue", "run_at", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)[0m  [["attempts", 0], ["created_at", Thu, 09 Feb 2012 15:40:39 UTC +00:00], ["failed_at", nil], ["handler", "--- !ruby/struct:DelayedMailhopper::SendJob\nid: 1\n"], ["last_error", nil], ["locked_at", nil], ["locked_by", nil], ["priority", 0], ["queue", nil], ["run_at", Thu, 09 Feb 2012 15:40:39 UTC +00:00], ["updated_at", Thu, 09 Feb 2012 15:40:39 UTC +00:00]]
+  [1m[35m (0.3ms)[0m  UPDATE "emails" SET "to_address" = 'to@example.com', "from_address" = 'from@example.com', "cc_address" = 'cc@example.com', "bcc_address" = 'bcc@example.com', "reply_to_address" = 'reply_to@example.com', "subject" = 'Hiya!', "content" = 'Date: Thu, 09 Feb 2012 10:40:39 -0500
+From: from@example.com
+Reply-To: reply_to@example.com
+To: to@example.com
+Cc: cc@example.com
+Message-ID: <4f33e8f766f20_40133fd8d5434d40400b@dgmpro.local.mail>
+Subject: Hiya!
+Mime-Version: 1.0
+Content-Type: text/plain;
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+Papaya', "created_at" = '2012-02-09 15:40:39.429030', "updated_at" = '2012-02-09 15:40:39.429030' WHERE "emails"."id" = 1
+  [1m[36m (0.0ms)[0m  [1mRELEASE SAVEPOINT active_record_1[0m
+
+Sent mail to to@example.com (14ms)
+Date: Thu, 09 Feb 2012 10:40:39 -0500
+From: from@example.com
+Reply-To: reply_to@example.com
+To: to@example.com
+Cc: cc@example.com
+Message-ID: <4f33e8f766f20_40133fd8d5434d40400b@dgmpro.local.mail>
+Subject: Hiya!
+Mime-Version: 1.0
+Content-Type: text/plain;
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+Papaya
+  [1m[35mDelayedMailhopper::Email Load (0.2ms)[0m  SELECT "emails".* FROM "emails" ORDER BY created_at DESC LIMIT 1
+  [1m[36m (0.6ms)[0m  [1mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  begin transaction
+  [1m[36m (0.1ms)[0m  [1mrollback transaction[0m
+  [1m[36m (0.4ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.1ms)[0m  rollback transaction
+  [1m[36m (0.0ms)[0m  [1mbegin transaction[0m
+  Rendered sample_mailer/hello.text.erb (8.1ms)
+  [1m[35m (0.1ms)[0m  SAVEPOINT active_record_1
+  [1m[36mSQL (63.7ms)[0m  [1mINSERT INTO "emails" ("bcc_address", "cc_address", "content", "created_at", "from_address", "reply_to_address", "sent_at", "subject", "to_address", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)[0m  [["bcc_address", "bccexample.com"], ["cc_address", "ccexample.com"], ["content", "Date: Thu, 09 Feb 2012 14:09:47 -0500\r\nFrom: fromexample.com\r\nReply-To: reply_toexample.com\r\nTo: toexample.com\r\nCc: ccexample.com\r\nMessage-ID: <4f3419fb45793_43783ff62d834d4498759@dgmpro.local.mail>\r\nSubject: Hiya!\r\nMime-Version: 1.0\r\nContent-Type: text/plain;\r\n charset=UTF-8\r\nContent-Transfer-Encoding: 7bit\r\n\r\nPapaya"], ["created_at", Thu, 09 Feb 2012 19:09:47 UTC +00:00], ["from_address", "fromexample.com"], ["reply_to_address", "reply_toexample.com"], ["sent_at", nil], ["subject", "Hiya!"], ["to_address", "toexample.com"], ["updated_at", Thu, 09 Feb 2012 19:09:47 UTC +00:00]]
+  [1m[35mSQL (0.8ms)[0m  INSERT INTO "delayed_jobs" ("attempts", "created_at", "failed_at", "handler", "last_error", "locked_at", "locked_by", "priority", "queue", "run_at", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)  [["attempts", 0], ["created_at", Thu, 09 Feb 2012 19:09:47 UTC +00:00], ["failed_at", nil], ["handler", "--- !ruby/struct:DelayedMailhopper::SendJob\nid: 1\n"], ["last_error", nil], ["locked_at", nil], ["locked_by", nil], ["priority", 0], ["queue", nil], ["run_at", Thu, 09 Feb 2012 19:09:47 UTC +00:00], ["updated_at", Thu, 09 Feb 2012 19:09:47 UTC +00:00]]
+  [1m[36m (0.4ms)[0m  [1mUPDATE "emails" SET "to_address" = 'toexample.com', "from_address" = 'fromexample.com', "cc_address" = 'ccexample.com', "bcc_address" = 'bccexample.com', "reply_to_address" = 'reply_toexample.com', "subject" = 'Hiya!', "content" = 'Date: Thu, 09 Feb 2012 14:09:47 -0500
+From: fromexample.com
+Reply-To: reply_toexample.com
+To: toexample.com
+Cc: ccexample.com
+Message-ID: <4f3419fb45793_43783ff62d834d4498759@dgmpro.local.mail>
+Subject: Hiya!
+Mime-Version: 1.0
+Content-Type: text/plain;
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+Papaya', "created_at" = '2012-02-09 19:09:47.293956', "updated_at" = '2012-02-09 19:09:47.293956' WHERE "emails"."id" = 1[0m
+  [1m[35m (0.1ms)[0m  RELEASE SAVEPOINT active_record_1
+
+Sent mail to toexample.com (102ms)
+Date: Thu, 09 Feb 2012 14:09:47 -0500
+From: fromexample.com
+Reply-To: reply_toexample.com
+To: toexample.com
+Cc: ccexample.com
+Message-ID: <4f3419fb45793_43783ff62d834d4498759@dgmpro.local.mail>
+Subject: Hiya!
+Mime-Version: 1.0
+Content-Type: text/plain;
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+Papaya
+  [1m[36mDelayedMailhopper::Email Load (0.2ms)[0m  [1mSELECT "emails".* FROM "emails" ORDER BY created_at DESC LIMIT 1[0m
+  [1m[35m (0.5ms)[0m  rollback transaction
+  [1m[36m (0.0ms)[0m  [1mbegin transaction[0m
+  Rendered sample_mailer/hello.text.erb (0.1ms)
+  [1m[35m (0.0ms)[0m  SAVEPOINT active_record_1
+  [1m[36mSQL (0.4ms)[0m  [1mINSERT INTO "emails" ("bcc_address", "cc_address", "content", "created_at", "from_address", "reply_to_address", "sent_at", "subject", "to_address", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)[0m  [["bcc_address", "bccexample.com"], ["cc_address", "ccexample.com"], ["content", "Date: Thu, 09 Feb 2012 14:09:47 -0500\r\nFrom: fromexample.com\r\nReply-To: reply_toexample.com\r\nTo: toexample.com\r\nCc: ccexample.com\r\nMessage-ID: <4f3419fb5f041_43783ff62d834d4498867@dgmpro.local.mail>\r\nSubject: Hiya!\r\nMime-Version: 1.0\r\nContent-Type: text/plain;\r\n charset=UTF-8\r\nContent-Transfer-Encoding: 7bit\r\n\r\nPapaya"], ["created_at", Thu, 09 Feb 2012 19:09:47 UTC +00:00], ["from_address", "fromexample.com"], ["reply_to_address", "reply_toexample.com"], ["sent_at", nil], ["subject", "Hiya!"], ["to_address", "toexample.com"], ["updated_at", Thu, 09 Feb 2012 19:09:47 UTC +00:00]]
+  [1m[35mSQL (0.3ms)[0m  INSERT INTO "delayed_jobs" ("attempts", "created_at", "failed_at", "handler", "last_error", "locked_at", "locked_by", "priority", "queue", "run_at", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)  [["attempts", 0], ["created_at", Thu, 09 Feb 2012 19:09:47 UTC +00:00], ["failed_at", nil], ["handler", "--- !ruby/struct:DelayedMailhopper::SendJob\nid: 1\n"], ["last_error", nil], ["locked_at", nil], ["locked_by", nil], ["priority", 0], ["queue", nil], ["run_at", Thu, 09 Feb 2012 19:09:47 UTC +00:00], ["updated_at", Thu, 09 Feb 2012 19:09:47 UTC +00:00]]
+  [1m[36m (0.4ms)[0m  [1mUPDATE "emails" SET "to_address" = 'toexample.com', "from_address" = 'fromexample.com', "cc_address" = 'ccexample.com', "bcc_address" = 'bccexample.com', "reply_to_address" = 'reply_toexample.com', "subject" = 'Hiya!', "content" = 'Date: Thu, 09 Feb 2012 14:09:47 -0500
+From: fromexample.com
+Reply-To: reply_toexample.com
+To: toexample.com
+Cc: ccexample.com
+Message-ID: <4f3419fb5f041_43783ff62d834d4498867@dgmpro.local.mail>
+Subject: Hiya!
+Mime-Version: 1.0
+Content-Type: text/plain;
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+Papaya', "created_at" = '2012-02-09 19:09:47.394752', "updated_at" = '2012-02-09 19:09:47.394752' WHERE "emails"."id" = 1[0m
+  [1m[35m (0.0ms)[0m  RELEASE SAVEPOINT active_record_1
+
+Sent mail to toexample.com (37ms)
+Date: Thu, 09 Feb 2012 14:09:47 -0500
+From: fromexample.com
+Reply-To: reply_toexample.com
+To: toexample.com
+Cc: ccexample.com
+Message-ID: <4f3419fb5f041_43783ff62d834d4498867@dgmpro.local.mail>
+Subject: Hiya!
+Mime-Version: 1.0
+Content-Type: text/plain;
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+Papaya
+  [1m[36m (0.1ms)[0m  [1mSELECT COUNT(*) FROM "emails" [0m
+  [1m[35m (0.0ms)[0m  SELECT COUNT(*) FROM "delayed_jobs" 
+  [1m[36m (0.5ms)[0m  [1mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  begin transaction
+  Rendered sample_mailer/hello.text.erb (0.1ms)
+  [1m[36m (0.1ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35mSQL (0.4ms)[0m  INSERT INTO "emails" ("bcc_address", "cc_address", "content", "created_at", "from_address", "reply_to_address", "sent_at", "subject", "to_address", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)  [["bcc_address", "bccexample.com"], ["cc_address", "ccexample.com"], ["content", "Date: Thu, 09 Feb 2012 14:09:47 -0500\r\nFrom: fromexample.com\r\nReply-To: reply_toexample.com\r\nTo: toexample.com\r\nCc: ccexample.com\r\nMessage-ID: <4f3419fb6a55a_43783ff62d834d4498925@dgmpro.local.mail>\r\nSubject: Hiya!\r\nMime-Version: 1.0\r\nContent-Type: text/plain;\r\n charset=UTF-8\r\nContent-Transfer-Encoding: 7bit\r\n\r\nPapaya"], ["created_at", Thu, 09 Feb 2012 19:09:47 UTC +00:00], ["from_address", "fromexample.com"], ["reply_to_address", "reply_toexample.com"], ["sent_at", nil], ["subject", "Hiya!"], ["to_address", "toexample.com"], ["updated_at", Thu, 09 Feb 2012 19:09:47 UTC +00:00]]
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO "delayed_jobs" ("attempts", "created_at", "failed_at", "handler", "last_error", "locked_at", "locked_by", "priority", "queue", "run_at", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)[0m  [["attempts", 0], ["created_at", Thu, 09 Feb 2012 19:09:47 UTC +00:00], ["failed_at", nil], ["handler", "--- !ruby/struct:DelayedMailhopper::SendJob\nid: 1\n"], ["last_error", nil], ["locked_at", nil], ["locked_by", nil], ["priority", 0], ["queue", nil], ["run_at", Thu, 09 Feb 2012 19:09:47 UTC +00:00], ["updated_at", Thu, 09 Feb 2012 19:09:47 UTC +00:00]]
+  [1m[35m (22.2ms)[0m  UPDATE "emails" SET "to_address" = 'toexample.com', "from_address" = 'fromexample.com', "cc_address" = 'ccexample.com', "bcc_address" = 'bccexample.com', "reply_to_address" = 'reply_toexample.com', "subject" = 'Hiya!', "content" = 'Date: Thu, 09 Feb 2012 14:09:47 -0500
+From: fromexample.com
+Reply-To: reply_toexample.com
+To: toexample.com
+Cc: ccexample.com
+Message-ID: <4f3419fb6a55a_43783ff62d834d4498925@dgmpro.local.mail>
+Subject: Hiya!
+Mime-Version: 1.0
+Content-Type: text/plain;
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+Papaya', "created_at" = '2012-02-09 19:09:47.440485', "updated_at" = '2012-02-09 19:09:47.440485' WHERE "emails"."id" = 1
+  [1m[36m (0.0ms)[0m  [1mRELEASE SAVEPOINT active_record_1[0m
+
+Sent mail to toexample.com (32ms)
+Date: Thu, 09 Feb 2012 14:09:47 -0500
+From: fromexample.com
+Reply-To: reply_toexample.com
+To: toexample.com
+Cc: ccexample.com
+Message-ID: <4f3419fb6a55a_43783ff62d834d4498925@dgmpro.local.mail>
+Subject: Hiya!
+Mime-Version: 1.0
+Content-Type: text/plain;
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+Papaya
+  [1m[35mDelayedMailhopper::Email Load (0.2ms)[0m  SELECT "emails".* FROM "emails" ORDER BY created_at DESC LIMIT 1
+  [1m[36mDelayed::Backend::ActiveRecord::Job Load (0.1ms)[0m  [1mSELECT "delayed_jobs".* FROM "delayed_jobs" LIMIT 1[0m
+  [1m[35mDelayedMailhopper::Email Load (0.1ms)[0m  SELECT "emails".* FROM "emails" WHERE "emails"."id" = ? ORDER BY created_at DESC LIMIT 1  [["id", 1]]
+
+Sent mail to toexample.com (5ms)
+Date: Thu, 09 Feb 2012 14:09:47 -0500
+From: fromexample.com
+Reply-To: reply_toexample.com
+To: toexample.com
+Cc: ccexample.com
+Message-ID: <4f3419fb6a55a_43783ff62d834d4498925@dgmpro.local.mail>
+Subject: Hiya!
+Mime-Version: 1.0
+Content-Type: text/plain;
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+Papaya
+  [1m[36m (0.1ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35m (0.1ms)[0m  UPDATE "emails" SET "sent_at" = '2012-02-09 19:09:47.485035', "updated_at" = '2012-02-09 19:09:47.485545' WHERE "emails"."id" = 1
+  [1m[36m (0.0ms)[0m  [1mRELEASE SAVEPOINT active_record_1[0m
+[DelayedMailhopper::SendJob] success for email_id 1, delayed_job_id 1
+  [1m[35mDelayedMailhopper::Email Load (0.1ms)[0m  SELECT "emails".* FROM "emails" WHERE "emails"."id" = ? LIMIT 1  [["id", 1]]
+  [1m[36m (0.7ms)[0m  [1mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  begin transaction
+  Rendered sample_mailer/hello.text.erb (0.1ms)
+  [1m[36m (0.0ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35mSQL (0.4ms)[0m  INSERT INTO "emails" ("bcc_address", "cc_address", "content", "created_at", "from_address", "reply_to_address", "sent_at", "subject", "to_address", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)  [["bcc_address", "bccexample.com"], ["cc_address", "ccexample.com"], ["content", "Date: Thu, 09 Feb 2012 14:09:47 -0500\r\nFrom: fromexample.com\r\nReply-To: reply_toexample.com\r\nTo: toexample.com\r\nCc: ccexample.com\r\nMessage-ID: <4f3419fb7928f_43783ff62d834d44990b8@dgmpro.local.mail>\r\nSubject: Hiya!\r\nMime-Version: 1.0\r\nContent-Type: text/plain;\r\n charset=UTF-8\r\nContent-Transfer-Encoding: 7bit\r\n\r\nPapaya"], ["created_at", Thu, 09 Feb 2012 19:09:47 UTC +00:00], ["from_address", "fromexample.com"], ["reply_to_address", "reply_toexample.com"], ["sent_at", nil], ["subject", "Hiya!"], ["to_address", "toexample.com"], ["updated_at", Thu, 09 Feb 2012 19:09:47 UTC +00:00]]
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO "delayed_jobs" ("attempts", "created_at", "failed_at", "handler", "last_error", "locked_at", "locked_by", "priority", "queue", "run_at", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)[0m  [["attempts", 0], ["created_at", Thu, 09 Feb 2012 19:09:47 UTC +00:00], ["failed_at", nil], ["handler", "--- !ruby/struct:DelayedMailhopper::SendJob\nid: 1\n"], ["last_error", nil], ["locked_at", nil], ["locked_by", nil], ["priority", 0], ["queue", nil], ["run_at", Thu, 09 Feb 2012 19:09:47 UTC +00:00], ["updated_at", Thu, 09 Feb 2012 19:09:47 UTC +00:00]]
+  [1m[35m (0.3ms)[0m  UPDATE "emails" SET "to_address" = 'toexample.com', "from_address" = 'fromexample.com', "cc_address" = 'ccexample.com', "bcc_address" = 'bccexample.com', "reply_to_address" = 'reply_toexample.com', "subject" = 'Hiya!', "content" = 'Date: Thu, 09 Feb 2012 14:09:47 -0500
+From: fromexample.com
+Reply-To: reply_toexample.com
+To: toexample.com
+Cc: ccexample.com
+Message-ID: <4f3419fb7928f_43783ff62d834d44990b8@dgmpro.local.mail>
+Subject: Hiya!
+Mime-Version: 1.0
+Content-Type: text/plain;
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+Papaya', "created_at" = '2012-02-09 19:09:47.501099', "updated_at" = '2012-02-09 19:09:47.501099' WHERE "emails"."id" = 1
+  [1m[36m (0.0ms)[0m  [1mRELEASE SAVEPOINT active_record_1[0m
+
+Sent mail to toexample.com (10ms)
+Date: Thu, 09 Feb 2012 14:09:47 -0500
+From: fromexample.com
+Reply-To: reply_toexample.com
+To: toexample.com
+Cc: ccexample.com
+Message-ID: <4f3419fb7928f_43783ff62d834d44990b8@dgmpro.local.mail>
+Subject: Hiya!
+Mime-Version: 1.0
+Content-Type: text/plain;
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+Papaya
+  [1m[35mDelayedMailhopper::Email Load (0.2ms)[0m  SELECT "emails".* FROM "emails" ORDER BY created_at DESC LIMIT 1
+
+Sent mail to toexample.com (3ms)
+Date: Thu, 09 Feb 2012 14:09:47 -0500
+From: fromexample.com
+Reply-To: reply_toexample.com
+To: toexample.com
+Cc: ccexample.com
+Message-ID: <4f3419fb7928f_43783ff62d834d44990b8@dgmpro.local.mail>
+Subject: Hiya!
+Mime-Version: 1.0
+Content-Type: text/plain;
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+Papaya
+  [1m[36m (0.0ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35m (0.1ms)[0m  UPDATE "emails" SET "sent_at" = '2012-02-09 19:09:47.517622', "updated_at" = '2012-02-09 19:09:47.518074' WHERE "emails"."id" = 1
+  [1m[36m (0.0ms)[0m  [1mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (0.6ms)[0m  rollback transaction
+  [1m[36m (0.4ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.1ms)[0m  rollback transaction
+  [1m[36m (0.0ms)[0m  [1mbegin transaction[0m
+  Rendered sample_mailer/hello.text.erb (2.0ms)
+  [1m[35m (0.1ms)[0m  SAVEPOINT active_record_1
+  [1m[36mSQL (4.0ms)[0m  [1mINSERT INTO "emails" ("bcc_address", "cc_address", "content", "created_at", "from_address", "reply_to_address", "sent_at", "subject", "to_address", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)[0m  [["bcc_address", "bccexample.com"], ["cc_address", "ccexample.com"], ["content", "Date: Thu, 09 Feb 2012 14:14:52 -0500\r\nFrom: fromexample.com\r\nReply-To: reply_toexample.com\r\nTo: toexample.com\r\nCc: ccexample.com\r\nMessage-ID: <4f341b2c5aeeb_43953fd055c34d34174e7@dgmpro.local.mail>\r\nSubject: Hiya!\r\nMime-Version: 1.0\r\nContent-Type: text/plain;\r\n charset=UTF-8\r\nContent-Transfer-Encoding: 7bit\r\n\r\nPapaya"], ["created_at", Thu, 09 Feb 2012 19:14:52 UTC +00:00], ["from_address", "fromexample.com"], ["reply_to_address", "reply_toexample.com"], ["sent_at", nil], ["subject", "Hiya!"], ["to_address", "toexample.com"], ["updated_at", Thu, 09 Feb 2012 19:14:52 UTC +00:00]]
+  [1m[35mSQL (0.4ms)[0m  INSERT INTO "delayed_jobs" ("attempts", "created_at", "failed_at", "handler", "last_error", "locked_at", "locked_by", "priority", "queue", "run_at", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)  [["attempts", 0], ["created_at", Thu, 09 Feb 2012 19:14:52 UTC +00:00], ["failed_at", nil], ["handler", "--- !ruby/struct:DelayedMailhopper::SendJob\nid: 1\n"], ["last_error", nil], ["locked_at", nil], ["locked_by", nil], ["priority", 0], ["queue", nil], ["run_at", Thu, 09 Feb 2012 19:14:52 UTC +00:00], ["updated_at", Thu, 09 Feb 2012 19:14:52 UTC +00:00]]
+  [1m[36m (1.0ms)[0m  [1mUPDATE "emails" SET "to_address" = 'toexample.com', "from_address" = 'fromexample.com', "cc_address" = 'ccexample.com', "bcc_address" = 'bccexample.com', "reply_to_address" = 'reply_toexample.com', "subject" = 'Hiya!', "content" = 'Date: Thu, 09 Feb 2012 14:14:52 -0500
+From: fromexample.com
+Reply-To: reply_toexample.com
+To: toexample.com
+Cc: ccexample.com
+Message-ID: <4f341b2c5aeeb_43953fd055c34d34174e7@dgmpro.local.mail>
+Subject: Hiya!
+Mime-Version: 1.0
+Content-Type: text/plain;
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+Papaya', "created_at" = '2012-02-09 19:14:52.381075', "updated_at" = '2012-02-09 19:14:52.381075' WHERE "emails"."id" = 1[0m
+  [1m[35m (0.1ms)[0m  RELEASE SAVEPOINT active_record_1
+
+Sent mail to toexample.com (40ms)
+Date: Thu, 09 Feb 2012 14:14:52 -0500
+From: fromexample.com
+Reply-To: reply_toexample.com
+To: toexample.com
+Cc: ccexample.com
+Message-ID: <4f341b2c5aeeb_43953fd055c34d34174e7@dgmpro.local.mail>
+Subject: Hiya!
+Mime-Version: 1.0
+Content-Type: text/plain;
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+Papaya
+  [1m[36mDelayedMailhopper::Email Load (0.2ms)[0m  [1mSELECT "emails".* FROM "emails" ORDER BY created_at DESC LIMIT 1[0m
+  [1m[35m (16.8ms)[0m  rollback transaction
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+  Rendered sample_mailer/hello.text.erb (0.1ms)
+  [1m[35m (0.0ms)[0m  SAVEPOINT active_record_1
+  [1m[36mSQL (0.4ms)[0m  [1mINSERT INTO "emails" ("bcc_address", "cc_address", "content", "created_at", "from_address", "reply_to_address", "sent_at", "subject", "to_address", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)[0m  [["bcc_address", "bccexample.com"], ["cc_address", "ccexample.com"], ["content", "Date: Thu, 09 Feb 2012 14:14:52 -0500\r\nFrom: fromexample.com\r\nReply-To: reply_toexample.com\r\nTo: toexample.com\r\nCc: ccexample.com\r\nMessage-ID: <4f341b2c699b8_43953fd055c34d34175b2@dgmpro.local.mail>\r\nSubject: Hiya!\r\nMime-Version: 1.0\r\nContent-Type: text/plain;\r\n charset=UTF-8\r\nContent-Transfer-Encoding: 7bit\r\n\r\nPapaya"], ["created_at", Thu, 09 Feb 2012 19:14:52 UTC +00:00], ["from_address", "fromexample.com"], ["reply_to_address", "reply_toexample.com"], ["sent_at", nil], ["subject", "Hiya!"], ["to_address", "toexample.com"], ["updated_at", Thu, 09 Feb 2012 19:14:52 UTC +00:00]]
+  [1m[35mSQL (0.3ms)[0m  INSERT INTO "delayed_jobs" ("attempts", "created_at", "failed_at", "handler", "last_error", "locked_at", "locked_by", "priority", "queue", "run_at", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)  [["attempts", 0], ["created_at", Thu, 09 Feb 2012 19:14:52 UTC +00:00], ["failed_at", nil], ["handler", "--- !ruby/struct:DelayedMailhopper::SendJob\nid: 1\n"], ["last_error", nil], ["locked_at", nil], ["locked_by", nil], ["priority", 0], ["queue", nil], ["run_at", Thu, 09 Feb 2012 19:14:52 UTC +00:00], ["updated_at", Thu, 09 Feb 2012 19:14:52 UTC +00:00]]
+  [1m[36m (0.4ms)[0m  [1mUPDATE "emails" SET "to_address" = 'toexample.com', "from_address" = 'fromexample.com', "cc_address" = 'ccexample.com', "bcc_address" = 'bccexample.com', "reply_to_address" = 'reply_toexample.com', "subject" = 'Hiya!', "content" = 'Date: Thu, 09 Feb 2012 14:14:52 -0500
+From: fromexample.com
+Reply-To: reply_toexample.com
+To: toexample.com
+Cc: ccexample.com
+Message-ID: <4f341b2c699b8_43953fd055c34d34175b2@dgmpro.local.mail>
+Subject: Hiya!
+Mime-Version: 1.0
+Content-Type: text/plain;
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+Papaya', "created_at" = '2012-02-09 19:14:52.437530', "updated_at" = '2012-02-09 19:14:52.437530' WHERE "emails"."id" = 1[0m
+  [1m[35m (0.0ms)[0m  RELEASE SAVEPOINT active_record_1
+
+Sent mail to toexample.com (37ms)
+Date: Thu, 09 Feb 2012 14:14:52 -0500
+From: fromexample.com
+Reply-To: reply_toexample.com
+To: toexample.com
+Cc: ccexample.com
+Message-ID: <4f341b2c699b8_43953fd055c34d34175b2@dgmpro.local.mail>
+Subject: Hiya!
+Mime-Version: 1.0
+Content-Type: text/plain;
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+Papaya
+  [1m[36m (0.1ms)[0m  [1mSELECT COUNT(*) FROM "emails" [0m
+  [1m[35m (0.0ms)[0m  SELECT COUNT(*) FROM "delayed_jobs" 
+  [1m[36m (4.0ms)[0m  [1mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  begin transaction
+  Rendered sample_mailer/hello.text.erb (0.1ms)
+  [1m[36m (0.1ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35mSQL (0.7ms)[0m  INSERT INTO "emails" ("bcc_address", "cc_address", "content", "created_at", "from_address", "reply_to_address", "sent_at", "subject", "to_address", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)  [["bcc_address", "bccexample.com"], ["cc_address", "ccexample.com"], ["content", "Date: Thu, 09 Feb 2012 14:14:52 -0500\r\nFrom: fromexample.com\r\nReply-To: reply_toexample.com\r\nTo: toexample.com\r\nCc: ccexample.com\r\nMessage-ID: <4f341b2c75afd_43953fd055c34d341762e@dgmpro.local.mail>\r\nSubject: Hiya!\r\nMime-Version: 1.0\r\nContent-Type: text/plain;\r\n charset=UTF-8\r\nContent-Transfer-Encoding: 7bit\r\n\r\nPapaya"], ["created_at", Thu, 09 Feb 2012 19:14:52 UTC +00:00], ["from_address", "fromexample.com"], ["reply_to_address", "reply_toexample.com"], ["sent_at", nil], ["subject", "Hiya!"], ["to_address", "toexample.com"], ["updated_at", Thu, 09 Feb 2012 19:14:52 UTC +00:00]]
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO "delayed_jobs" ("attempts", "created_at", "failed_at", "handler", "last_error", "locked_at", "locked_by", "priority", "queue", "run_at", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)[0m  [["attempts", 0], ["created_at", Thu, 09 Feb 2012 19:14:52 UTC +00:00], ["failed_at", nil], ["handler", "--- !ruby/struct:DelayedMailhopper::SendJob\nid: 1\n"], ["last_error", nil], ["locked_at", nil], ["locked_by", nil], ["priority", 0], ["queue", nil], ["run_at", Thu, 09 Feb 2012 19:14:52 UTC +00:00], ["updated_at", Thu, 09 Feb 2012 19:14:52 UTC +00:00]]
+  [1m[35m (0.4ms)[0m  UPDATE "emails" SET "to_address" = 'toexample.com', "from_address" = 'fromexample.com', "cc_address" = 'ccexample.com', "bcc_address" = 'bccexample.com', "reply_to_address" = 'reply_toexample.com', "subject" = 'Hiya!', "content" = 'Date: Thu, 09 Feb 2012 14:14:52 -0500
+From: fromexample.com
+Reply-To: reply_toexample.com
+To: toexample.com
+Cc: ccexample.com
+Message-ID: <4f341b2c75afd_43953fd055c34d341762e@dgmpro.local.mail>
+Subject: Hiya!
+Mime-Version: 1.0
+Content-Type: text/plain;
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+Papaya', "created_at" = '2012-02-09 19:14:52.487432', "updated_at" = '2012-02-09 19:14:52.487432' WHERE "emails"."id" = 1
+  [1m[36m (0.0ms)[0m  [1mRELEASE SAVEPOINT active_record_1[0m
+
+Sent mail to toexample.com (11ms)
+Date: Thu, 09 Feb 2012 14:14:52 -0500
+From: fromexample.com
+Reply-To: reply_toexample.com
+To: toexample.com
+Cc: ccexample.com
+Message-ID: <4f341b2c75afd_43953fd055c34d341762e@dgmpro.local.mail>
+Subject: Hiya!
+Mime-Version: 1.0
+Content-Type: text/plain;
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+Papaya
+  [1m[35mDelayedMailhopper::Email Load (0.2ms)[0m  SELECT "emails".* FROM "emails" ORDER BY created_at DESC LIMIT 1
+  [1m[36mDelayed::Backend::ActiveRecord::Job Load (0.1ms)[0m  [1mSELECT "delayed_jobs".* FROM "delayed_jobs" LIMIT 1[0m
+  [1m[35mDelayedMailhopper::Email Load (0.1ms)[0m  SELECT "emails".* FROM "emails" WHERE "emails"."id" = ? ORDER BY created_at DESC LIMIT 1  [["id", 1]]
+
+Sent mail to toexample.com (4ms)
+Date: Thu, 09 Feb 2012 14:14:52 -0500
+From: fromexample.com
+Reply-To: reply_toexample.com
+To: toexample.com
+Cc: ccexample.com
+Message-ID: <4f341b2c75afd_43953fd055c34d341762e@dgmpro.local.mail>
+Subject: Hiya!
+Mime-Version: 1.0
+Content-Type: text/plain;
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+Papaya
+  [1m[36m (0.1ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35m (0.1ms)[0m  UPDATE "emails" SET "sent_at" = '2012-02-09 19:14:52.509977', "updated_at" = '2012-02-09 19:14:52.510473' WHERE "emails"."id" = 1
+  [1m[36m (0.0ms)[0m  [1mRELEASE SAVEPOINT active_record_1[0m
+[DelayedMailhopper::SendJob] success for email_id 1, delayed_job_id 1
+  [1m[35mDelayedMailhopper::Email Load (0.1ms)[0m  SELECT "emails".* FROM "emails" WHERE "emails"."id" = ? LIMIT 1  [["id", 1]]
+  [1m[36m (0.6ms)[0m  [1mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  begin transaction
+  Rendered sample_mailer/hello.text.erb (0.1ms)
+  [1m[36m (0.0ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35mSQL (0.4ms)[0m  INSERT INTO "emails" ("bcc_address", "cc_address", "content", "created_at", "from_address", "reply_to_address", "sent_at", "subject", "to_address", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)  [["bcc_address", "bccexample.com"], ["cc_address", "ccexample.com"], ["content", "Date: Thu, 09 Feb 2012 14:14:52 -0500\r\nFrom: fromexample.com\r\nReply-To: reply_toexample.com\r\nTo: toexample.com\r\nCc: ccexample.com\r\nMessage-ID: <4f341b2c7f3e0_43953fd055c34d3417750@dgmpro.local.mail>\r\nSubject: Hiya!\r\nMime-Version: 1.0\r\nContent-Type: text/plain;\r\n charset=UTF-8\r\nContent-Transfer-Encoding: 7bit\r\n\r\nPapaya"], ["created_at", Thu, 09 Feb 2012 19:14:52 UTC +00:00], ["from_address", "fromexample.com"], ["reply_to_address", "reply_toexample.com"], ["sent_at", nil], ["subject", "Hiya!"], ["to_address", "toexample.com"], ["updated_at", Thu, 09 Feb 2012 19:14:52 UTC +00:00]]
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO "delayed_jobs" ("attempts", "created_at", "failed_at", "handler", "last_error", "locked_at", "locked_by", "priority", "queue", "run_at", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)[0m  [["attempts", 0], ["created_at", Thu, 09 Feb 2012 19:14:52 UTC +00:00], ["failed_at", nil], ["handler", "--- !ruby/struct:DelayedMailhopper::SendJob\nid: 1\n"], ["last_error", nil], ["locked_at", nil], ["locked_by", nil], ["priority", 0], ["queue", nil], ["run_at", Thu, 09 Feb 2012 19:14:52 UTC +00:00], ["updated_at", Thu, 09 Feb 2012 19:14:52 UTC +00:00]]
+  [1m[35m (0.3ms)[0m  UPDATE "emails" SET "to_address" = 'toexample.com', "from_address" = 'fromexample.com', "cc_address" = 'ccexample.com', "bcc_address" = 'bccexample.com', "reply_to_address" = 'reply_toexample.com', "subject" = 'Hiya!', "content" = 'Date: Thu, 09 Feb 2012 14:14:52 -0500
+From: fromexample.com
+Reply-To: reply_toexample.com
+To: toexample.com
+Cc: ccexample.com
+Message-ID: <4f341b2c7f3e0_43953fd055c34d3417750@dgmpro.local.mail>
+Subject: Hiya!
+Mime-Version: 1.0
+Content-Type: text/plain;
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+Papaya', "created_at" = '2012-02-09 19:14:52.526054', "updated_at" = '2012-02-09 19:14:52.526054' WHERE "emails"."id" = 1
+  [1m[36m (0.0ms)[0m  [1mRELEASE SAVEPOINT active_record_1[0m
+
+Sent mail to toexample.com (10ms)
+Date: Thu, 09 Feb 2012 14:14:52 -0500
+From: fromexample.com
+Reply-To: reply_toexample.com
+To: toexample.com
+Cc: ccexample.com
+Message-ID: <4f341b2c7f3e0_43953fd055c34d3417750@dgmpro.local.mail>
+Subject: Hiya!
+Mime-Version: 1.0
+Content-Type: text/plain;
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+Papaya
+  [1m[35mDelayedMailhopper::Email Load (0.1ms)[0m  SELECT "emails".* FROM "emails" ORDER BY created_at DESC LIMIT 1
+
+Sent mail to toexample.com (3ms)
+Date: Thu, 09 Feb 2012 14:14:52 -0500
+From: fromexample.com
+Reply-To: reply_toexample.com
+To: toexample.com
+Cc: ccexample.com
+Message-ID: <4f341b2c7f3e0_43953fd055c34d3417750@dgmpro.local.mail>
+Subject: Hiya!
+Mime-Version: 1.0
+Content-Type: text/plain;
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+Papaya
+  [1m[36m (0.0ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35m (0.1ms)[0m  UPDATE "emails" SET "sent_at" = '2012-02-09 19:14:52.543980', "updated_at" = '2012-02-09 19:14:52.544440' WHERE "emails"."id" = 1
+  [1m[36m (0.0ms)[0m  [1mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (1.0ms)[0m  rollback transaction
+  [1m[36m (0.4ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.1ms)[0m  rollback transaction
+  [1m[36m (0.0ms)[0m  [1mbegin transaction[0m
+  Rendered sample_mailer/hello.text.erb (3.0ms)
+  [1m[35m (0.1ms)[0m  SAVEPOINT active_record_1
+  [1m[36mSQL (3.9ms)[0m  [1mINSERT INTO "emails" ("bcc_address", "cc_address", "content", "created_at", "from_address", "reply_to_address", "sent_at", "subject", "to_address", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)[0m  [["bcc_address", "bccexample.com"], ["cc_address", "ccexample.com"], ["content", "Date: Thu, 09 Feb 2012 14:14:59 -0500\r\nFrom: fromexample.com\r\nReply-To: reply_toexample.com\r\nTo: toexample.com\r\nCc: ccexample.com\r\nMessage-ID: <4f341b33d2172_43963ff50c834d3476827@dgmpro.local.mail>\r\nSubject: Hiya!\r\nMime-Version: 1.0\r\nContent-Type: text/plain;\r\n charset=UTF-8\r\nContent-Transfer-Encoding: 7bit\r\n\r\nPapaya"], ["created_at", Thu, 09 Feb 2012 19:14:59 UTC +00:00], ["from_address", "fromexample.com"], ["reply_to_address", "reply_toexample.com"], ["sent_at", nil], ["subject", "Hiya!"], ["to_address", "toexample.com"], ["updated_at", Thu, 09 Feb 2012 19:14:59 UTC +00:00]]
+  [1m[35mSQL (0.4ms)[0m  INSERT INTO "delayed_jobs" ("attempts", "created_at", "failed_at", "handler", "last_error", "locked_at", "locked_by", "priority", "queue", "run_at", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)  [["attempts", 0], ["created_at", Thu, 09 Feb 2012 19:14:59 UTC +00:00], ["failed_at", nil], ["handler", "--- !ruby/struct:DelayedMailhopper::SendJob\nid: 1\n"], ["last_error", nil], ["locked_at", nil], ["locked_by", nil], ["priority", 0], ["queue", nil], ["run_at", Thu, 09 Feb 2012 19:14:59 UTC +00:00], ["updated_at", Thu, 09 Feb 2012 19:14:59 UTC +00:00]]
+  [1m[36m (0.4ms)[0m  [1mUPDATE "emails" SET "to_address" = 'toexample.com', "from_address" = 'fromexample.com', "cc_address" = 'ccexample.com', "bcc_address" = 'bccexample.com', "reply_to_address" = 'reply_toexample.com', "subject" = 'Hiya!', "content" = 'Date: Thu, 09 Feb 2012 14:14:59 -0500
+From: fromexample.com
+Reply-To: reply_toexample.com
+To: toexample.com
+Cc: ccexample.com
+Message-ID: <4f341b33d2172_43963ff50c834d3476827@dgmpro.local.mail>
+Subject: Hiya!
+Mime-Version: 1.0
+Content-Type: text/plain;
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+Papaya', "created_at" = '2012-02-09 19:14:59.869041', "updated_at" = '2012-02-09 19:14:59.869041' WHERE "emails"."id" = 1[0m
+  [1m[35m (0.0ms)[0m  RELEASE SAVEPOINT active_record_1
+
+Sent mail to toexample.com (41ms)
+Date: Thu, 09 Feb 2012 14:14:59 -0500
+From: fromexample.com
+Reply-To: reply_toexample.com
+To: toexample.com
+Cc: ccexample.com
+Message-ID: <4f341b33d2172_43963ff50c834d3476827@dgmpro.local.mail>
+Subject: Hiya!
+Mime-Version: 1.0
+Content-Type: text/plain;
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+Papaya
+  [1m[36mDelayedMailhopper::Email Load (0.2ms)[0m  [1mSELECT "emails".* FROM "emails" ORDER BY created_at DESC LIMIT 1[0m
+  [1m[35m (0.6ms)[0m  rollback transaction
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+  Rendered sample_mailer/hello.text.erb (0.1ms)
+  [1m[35m (0.1ms)[0m  SAVEPOINT active_record_1
+  [1m[36mSQL (0.5ms)[0m  [1mINSERT INTO "emails" ("bcc_address", "cc_address", "content", "created_at", "from_address", "reply_to_address", "sent_at", "subject", "to_address", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)[0m  [["bcc_address", "bccexample.com"], ["cc_address", "ccexample.com"], ["content", "Date: Thu, 09 Feb 2012 14:14:59 -0500\r\nFrom: fromexample.com\r\nReply-To: reply_toexample.com\r\nTo: toexample.com\r\nCc: ccexample.com\r\nMessage-ID: <4f341b33dcfcb_43963ff50c834d347698f@dgmpro.local.mail>\r\nSubject: Hiya!\r\nMime-Version: 1.0\r\nContent-Type: text/plain;\r\n charset=UTF-8\r\nContent-Transfer-Encoding: 7bit\r\n\r\nPapaya"], ["created_at", Thu, 09 Feb 2012 19:14:59 UTC +00:00], ["from_address", "fromexample.com"], ["reply_to_address", "reply_toexample.com"], ["sent_at", nil], ["subject", "Hiya!"], ["to_address", "toexample.com"], ["updated_at", Thu, 09 Feb 2012 19:14:59 UTC +00:00]]
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO "delayed_jobs" ("attempts", "created_at", "failed_at", "handler", "last_error", "locked_at", "locked_by", "priority", "queue", "run_at", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)  [["attempts", 0], ["created_at", Thu, 09 Feb 2012 19:14:59 UTC +00:00], ["failed_at", nil], ["handler", "--- !ruby/struct:DelayedMailhopper::SendJob\nid: 1\n"], ["last_error", nil], ["locked_at", nil], ["locked_by", nil], ["priority", 0], ["queue", nil], ["run_at", Thu, 09 Feb 2012 19:14:59 UTC +00:00], ["updated_at", Thu, 09 Feb 2012 19:14:59 UTC +00:00]]
+  [1m[36m (0.3ms)[0m  [1mUPDATE "emails" SET "to_address" = 'toexample.com', "from_address" = 'fromexample.com', "cc_address" = 'ccexample.com', "bcc_address" = 'bccexample.com', "reply_to_address" = 'reply_toexample.com', "subject" = 'Hiya!', "content" = 'Date: Thu, 09 Feb 2012 14:14:59 -0500
+From: fromexample.com
+Reply-To: reply_toexample.com
+To: toexample.com
+Cc: ccexample.com
+Message-ID: <4f341b33dcfcb_43963ff50c834d347698f@dgmpro.local.mail>
+Subject: Hiya!
+Mime-Version: 1.0
+Content-Type: text/plain;
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+Papaya', "created_at" = '2012-02-09 19:14:59.939040', "updated_at" = '2012-02-09 19:14:59.939040' WHERE "emails"."id" = 1[0m
+  [1m[35m (0.0ms)[0m  RELEASE SAVEPOINT active_record_1
+
+Sent mail to toexample.com (40ms)
+Date: Thu, 09 Feb 2012 14:14:59 -0500
+From: fromexample.com
+Reply-To: reply_toexample.com
+To: toexample.com
+Cc: ccexample.com
+Message-ID: <4f341b33dcfcb_43963ff50c834d347698f@dgmpro.local.mail>
+Subject: Hiya!
+Mime-Version: 1.0
+Content-Type: text/plain;
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+Papaya
+  [1m[36m (0.1ms)[0m  [1mSELECT COUNT(*) FROM "emails" [0m
+  [1m[35m (0.1ms)[0m  SELECT COUNT(*) FROM "delayed_jobs" 
+  [1m[36m (0.6ms)[0m  [1mrollback transaction[0m
+  [1m[35m (0.1ms)[0m  begin transaction
+  Rendered sample_mailer/hello.text.erb (0.1ms)
+  [1m[36m (0.1ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35mSQL (0.5ms)[0m  INSERT INTO "emails" ("bcc_address", "cc_address", "content", "created_at", "from_address", "reply_to_address", "sent_at", "subject", "to_address", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)  [["bcc_address", "bccexample.com"], ["cc_address", "ccexample.com"], ["content", "Date: Thu, 09 Feb 2012 14:14:59 -0500\r\nFrom: fromexample.com\r\nReply-To: reply_toexample.com\r\nTo: toexample.com\r\nCc: ccexample.com\r\nMessage-ID: <4f341b33e9015_43963ff50c834d347704@dgmpro.local.mail>\r\nSubject: Hiya!\r\nMime-Version: 1.0\r\nContent-Type: text/plain;\r\n charset=UTF-8\r\nContent-Transfer-Encoding: 7bit\r\n\r\nPapaya"], ["created_at", Thu, 09 Feb 2012 19:14:59 UTC +00:00], ["from_address", "fromexample.com"], ["reply_to_address", "reply_toexample.com"], ["sent_at", nil], ["subject", "Hiya!"], ["to_address", "toexample.com"], ["updated_at", Thu, 09 Feb 2012 19:14:59 UTC +00:00]]
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO "delayed_jobs" ("attempts", "created_at", "failed_at", "handler", "last_error", "locked_at", "locked_by", "priority", "queue", "run_at", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)[0m  [["attempts", 0], ["created_at", Thu, 09 Feb 2012 19:14:59 UTC +00:00], ["failed_at", nil], ["handler", "--- !ruby/struct:DelayedMailhopper::SendJob\nid: 1\n"], ["last_error", nil], ["locked_at", nil], ["locked_by", nil], ["priority", 0], ["queue", nil], ["run_at", Thu, 09 Feb 2012 19:14:59 UTC +00:00], ["updated_at", Thu, 09 Feb 2012 19:14:59 UTC +00:00]]
+  [1m[35m (0.3ms)[0m  UPDATE "emails" SET "to_address" = 'toexample.com', "from_address" = 'fromexample.com', "cc_address" = 'ccexample.com', "bcc_address" = 'bccexample.com', "reply_to_address" = 'reply_toexample.com', "subject" = 'Hiya!', "content" = 'Date: Thu, 09 Feb 2012 14:14:59 -0500
+From: fromexample.com
+Reply-To: reply_toexample.com
+To: toexample.com
+Cc: ccexample.com
+Message-ID: <4f341b33e9015_43963ff50c834d347704@dgmpro.local.mail>
+Subject: Hiya!
+Mime-Version: 1.0
+Content-Type: text/plain;
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+Papaya', "created_at" = '2012-02-09 19:14:59.959666', "updated_at" = '2012-02-09 19:14:59.959666' WHERE "emails"."id" = 1
+  [1m[36m (0.0ms)[0m  [1mRELEASE SAVEPOINT active_record_1[0m
+
+Sent mail to toexample.com (11ms)
+Date: Thu, 09 Feb 2012 14:14:59 -0500
+From: fromexample.com
+Reply-To: reply_toexample.com
+To: toexample.com
+Cc: ccexample.com
+Message-ID: <4f341b33e9015_43963ff50c834d347704@dgmpro.local.mail>
+Subject: Hiya!
+Mime-Version: 1.0
+Content-Type: text/plain;
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+Papaya
+  [1m[35mDelayedMailhopper::Email Load (0.2ms)[0m  SELECT "emails".* FROM "emails" ORDER BY created_at DESC LIMIT 1
+  [1m[36mDelayed::Backend::ActiveRecord::Job Load (0.1ms)[0m  [1mSELECT "delayed_jobs".* FROM "delayed_jobs" LIMIT 1[0m
+  [1m[35mDelayedMailhopper::Email Load (0.1ms)[0m  SELECT "emails".* FROM "emails" WHERE "emails"."id" = ? ORDER BY created_at DESC LIMIT 1  [["id", 1]]
+
+Sent mail to toexample.com (4ms)
+Date: Thu, 09 Feb 2012 14:14:59 -0500
+From: fromexample.com
+Reply-To: reply_toexample.com
+To: toexample.com
+Cc: ccexample.com
+Message-ID: <4f341b33e9015_43963ff50c834d347704@dgmpro.local.mail>
+Subject: Hiya!
+Mime-Version: 1.0
+Content-Type: text/plain;
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+Papaya
+  [1m[36m (0.1ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35m (0.1ms)[0m  UPDATE "emails" SET "sent_at" = '2012-02-09 19:14:59.981845', "updated_at" = '2012-02-09 19:14:59.982332' WHERE "emails"."id" = 1
+  [1m[36m (0.0ms)[0m  [1mRELEASE SAVEPOINT active_record_1[0m
+[DelayedMailhopper::SendJob] success for email_id 1, delayed_job_id 1
+  [1m[35mDelayedMailhopper::Email Load (0.1ms)[0m  SELECT "emails".* FROM "emails" WHERE "emails"."id" = ? LIMIT 1  [["id", 1]]
+  [1m[36m (11.9ms)[0m  [1mrollback transaction[0m
+  [1m[35m (0.1ms)[0m  begin transaction
+  Rendered sample_mailer/hello.text.erb (0.1ms)
+  [1m[36m (0.1ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35mSQL (0.6ms)[0m  INSERT INTO "emails" ("bcc_address", "cc_address", "content", "created_at", "from_address", "reply_to_address", "sent_at", "subject", "to_address", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)  [["bcc_address", "bccexample.com"], ["cc_address", "ccexample.com"], ["content", "Date: Thu, 09 Feb 2012 14:15:00 -0500\r\nFrom: fromexample.com\r\nReply-To: reply_toexample.com\r\nTo: toexample.com\r\nCc: ccexample.com\r\nMessage-ID: <4f341b341491_43963ff50c834d347711@dgmpro.local.mail>\r\nSubject: Hiya!\r\nMime-Version: 1.0\r\nContent-Type: text/plain;\r\n charset=UTF-8\r\nContent-Transfer-Encoding: 7bit\r\n\r\nPapaya"], ["created_at", Thu, 09 Feb 2012 19:15:00 UTC +00:00], ["from_address", "fromexample.com"], ["reply_to_address", "reply_toexample.com"], ["sent_at", nil], ["subject", "Hiya!"], ["to_address", "toexample.com"], ["updated_at", Thu, 09 Feb 2012 19:15:00 UTC +00:00]]
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO "delayed_jobs" ("attempts", "created_at", "failed_at", "handler", "last_error", "locked_at", "locked_by", "priority", "queue", "run_at", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)[0m  [["attempts", 0], ["created_at", Thu, 09 Feb 2012 19:15:00 UTC +00:00], ["failed_at", nil], ["handler", "--- !ruby/struct:DelayedMailhopper::SendJob\nid: 1\n"], ["last_error", nil], ["locked_at", nil], ["locked_by", nil], ["priority", 0], ["queue", nil], ["run_at", Thu, 09 Feb 2012 19:15:00 UTC +00:00], ["updated_at", Thu, 09 Feb 2012 19:15:00 UTC +00:00]]
+  [1m[35m (0.4ms)[0m  UPDATE "emails" SET "to_address" = 'toexample.com', "from_address" = 'fromexample.com', "cc_address" = 'ccexample.com', "bcc_address" = 'bccexample.com', "reply_to_address" = 'reply_toexample.com', "subject" = 'Hiya!', "content" = 'Date: Thu, 09 Feb 2012 14:15:00 -0500
+From: fromexample.com
+Reply-To: reply_toexample.com
+To: toexample.com
+Cc: ccexample.com
+Message-ID: <4f341b341491_43963ff50c834d347711@dgmpro.local.mail>
+Subject: Hiya!
+Mime-Version: 1.0
+Content-Type: text/plain;
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+Papaya', "created_at" = '2012-02-09 19:15:00.011177', "updated_at" = '2012-02-09 19:15:00.011177' WHERE "emails"."id" = 1
+  [1m[36m (0.0ms)[0m  [1mRELEASE SAVEPOINT active_record_1[0m
+
+Sent mail to toexample.com (12ms)
+Date: Thu, 09 Feb 2012 14:15:00 -0500
+From: fromexample.com
+Reply-To: reply_toexample.com
+To: toexample.com
+Cc: ccexample.com
+Message-ID: <4f341b341491_43963ff50c834d347711@dgmpro.local.mail>
+Subject: Hiya!
+Mime-Version: 1.0
+Content-Type: text/plain;
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+Papaya
+  [1m[35mDelayedMailhopper::Email Load (0.2ms)[0m  SELECT "emails".* FROM "emails" ORDER BY created_at DESC LIMIT 1
+
+Sent mail to toexample.com (3ms)
+Date: Thu, 09 Feb 2012 14:15:00 -0500
+From: fromexample.com
+Reply-To: reply_toexample.com
+To: toexample.com
+Cc: ccexample.com
+Message-ID: <4f341b341491_43963ff50c834d347711@dgmpro.local.mail>
+Subject: Hiya!
+Mime-Version: 1.0
+Content-Type: text/plain;
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+Papaya
+  [1m[36m (0.1ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35m (0.1ms)[0m  UPDATE "emails" SET "sent_at" = '2012-02-09 19:15:00.029770', "updated_at" = '2012-02-09 19:15:00.030279' WHERE "emails"."id" = 1
+  [1m[36m (0.0ms)[0m  [1mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (0.5ms)[0m  rollback transaction
