@@ -19,6 +19,7 @@ Gem::Specification.new do |s|
   s.add_dependency "mailhopper", "~> 0.0.1"
   s.add_dependency "delayed_job"
 
-  s.add_development_dependency "sqlite3"
+  s.add_development_dependency "sqlite3", ">= 1.3.4"
   s.add_development_dependency "shoulda"
+  s.add_development_dependency "delayed_job_active_record"
 end
