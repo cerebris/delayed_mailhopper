@@ -13,10 +13,10 @@ Gem::Specification.new do |s|
   s.summary     = "A simple solution that uses ActiveRecord and DelayedJob to queue, deliver and archive emails in Rails apps."
   s.description = "DelayedMailhopper extends Mailhopper to deliver emails asynchronously with DelayedJob."
 
-  s.files = Dir["{app,config,db,lib}/**/*"] + ["MIT-LICENSE", "Rakefile", "README.md"]
-  s.test_files = Dir["spec/**/*"]
+  s.files       = Dir["{app,config,db,lib}/**/*"] + ["MIT-LICENSE", "Rakefile", "README.md"]
+  s.test_files  = Dir["spec/**/*"]
 
-  s.add_dependency "mailhopper", "~> 0.0.1"
+  s.add_dependency "mailhopper", ">= 0.0.1"
   s.add_dependency "delayed_job"
 
   s.add_development_dependency "sqlite3", ">= 1.3.4"

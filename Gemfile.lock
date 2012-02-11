@@ -1,9 +1,9 @@
 PATH
   remote: .
   specs:
-    delayed_mailhopper (0.0.4)
+    delayed_mailhopper (0.0.5)
       delayed_job
-      mailhopper (~> 0.0.1)
+      mailhopper (>= 0.0.1)
 
 GEM
   remote: http://rubygems.org/
@@ -52,7 +52,7 @@ GEM
       i18n (>= 0.4.0)
       mime-types (~> 1.16)
       treetop (~> 1.4.8)
-    mailhopper (0.0.6)
+    mailhopper (0.0.7)
       rails (>= 3.1.0)
     mime-types (1.17.2)
     multi_json (1.0.4)
