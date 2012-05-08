@@ -66,6 +66,14 @@ script/rails runner 'Delayed::Backend::Mongoid::Job.create_indexes'
 
 see the README: https://github.com/collectiveidea/delayed_job_mongoid
 
+## Troubleshooting
+
+If you've cleared your delayed job queue and need to regenerate jobs for all unsent emails, try the following from your Rails console (`rails c`):
+
+```
+DelayedMailhopper::Email.unsent.each { |email| email.enqueue }
+```
+
 ## References
 
 Please see the README for Mailhopper: https://github.com/cerebris/mailhopper
